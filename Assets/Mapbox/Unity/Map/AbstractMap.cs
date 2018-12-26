@@ -986,5 +986,11 @@ namespace Mapbox.Unity.Map
 		public event Action OnUpdated = delegate { };
 		public event Action OnMapRedrawn = delegate { };
 		#endregion
+
+		public Vector2d getCenterLongLat() {
+			return _centerLatitudeLongitude;
+		}
 	}
+
+
 }
