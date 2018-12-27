@@ -1,4 +1,4 @@
-﻿﻿using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mapbox.Unity.Utilities;
@@ -18,23 +18,15 @@ public class MovementScript : MonoBehaviour
 	public float rotationSpeed = 180f;
 	private Vector2d mapCenterLongLat; 
 	private Rigidbody body;
-	private Transform thisTransform;
-	private AbstractMap abstractMap; 
+	private PlayerLocation playerLocation;
 
 
 	// Use this for initialization
 	void Start ()
 	{
 		// Retrieve reference to this GameObject's Rigidbody component
-		abstractMap = GameObject.Find("Map").GetComponent<AbstractMap>();
-		mapCenterLongLat = abstractMap.getCenterLongLat ();
-
-
-
-		Debug.Log ("Map Center Long Lat is at: " + mapCenterLongLat.ToString ());
 		body = GetComponent<Rigidbody>();
-		thisTransform = GetComponent<Transform> ();
-		thisTransform.position = new Vector3 (0.0f, 0.0f, 0.0f);
+		transform.position = new Vector3 (0.0f, 0.0f, 0.0f);
 
 
 
@@ -43,9 +35,7 @@ public class MovementScript : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		Vector2d mapCenter = abstractMap.getCenterLongLat ();
-		Debug.Log("Center of map is: " + mapCenter.ToString());
-		Debug.Log("CurrentPosition is: " + getLongLat().ToString());
+		
 		// Get movement input value
 		float movementInput = GetMovementInput();
 
@@ -110,21 +100,7 @@ public class MovementScript : MonoBehaviour
 		}
 	}
 
-	private Vector2d getLongLat() {
-		double newX, newY;
-		Vector2d mapCenter = abstractMap.getCenterLongLat ();
-
-		Vector2d longLatChange = VectorExtensions.GetGeoPosition(transform, mapCenter,  (abstractMap.WorldRelativeScale / 2.0));
-		newX = mapCenter.x + longLatChange.x;
-		newY = mapCenter.y + longLatChange.y;
-
-		return new Vector2d (newX, newY);
-
-	}
-
 	void OnCollisionEnter(Collision collision) {
 		body.velocity = Vector3.zero;
-		Vector2d currentPosition = getLongLat ();
-		Debug.Log (currentPosition.ToString());
 	}
 }

@@ -41,6 +41,7 @@ namespace Mapbox.Unity.Map
 		protected Vector2d _centerMercator;
 		protected float _worldRelativeScale;
 		protected Vector3 _mapScaleFactor;
+		public volatile bool isReady = false;
 		#endregion
 
 		#region Properties
@@ -585,6 +586,7 @@ namespace Mapbox.Unity.Map
 			SendInitialized();
 
 			_tileProvider.UpdateTileExtent();
+			this.isReady = true;
 		}
 
 		private void SetScalingStrategy()
@@ -989,6 +991,10 @@ namespace Mapbox.Unity.Map
 
 		public Vector2d getCenterLongLat() {
 			return _centerLatitudeLongitude;
+		}
+
+		public bool getIsReady() {
+			return this.getIsReady();
 		}
 	}
 
