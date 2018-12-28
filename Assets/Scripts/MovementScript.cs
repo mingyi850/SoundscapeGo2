@@ -12,12 +12,13 @@ public class MovementScript : MonoBehaviour
 	// Identifies which player this belongs to
 
 	// How quickly player moves forward and back
-	public float speed = 10f;
+	public float speed;
 
 	// How quickly player rotates (degrees per second)
 	public float rotationSpeed = 180f;
 	private Vector2d mapCenterLongLat; 
 	private Rigidbody body;
+	private CharacterController controller;
 	private PlayerLocation playerLocation;
 
 
@@ -25,6 +26,7 @@ public class MovementScript : MonoBehaviour
 	void Start ()
 	{
 		// Retrieve reference to this GameObject's Rigidbody component
+		controller = GetComponent<CharacterController>();
 		body = GetComponent<Rigidbody>();
 		transform.position = new Vector3 (0.0f, 0.0f, 0.0f);
 
@@ -33,7 +35,7 @@ public class MovementScript : MonoBehaviour
 	}
 
 	// Update is called once per frame
-	void Update ()
+	void FixedUpdate ()
 	{
 		
 		// Get movement input value
@@ -43,7 +45,7 @@ public class MovementScript : MonoBehaviour
 		Vector3 movement = transform.forward * movementInput * speed * Time.deltaTime;
 
 		// Move our Rigidbody to this position
-		body.MovePosition(body.position + movement);
+		controller.Move(movement);
 
 		// Get rotation input value
 		float rotationInput = GetRotationInput();
@@ -101,6 +103,10 @@ public class MovementScript : MonoBehaviour
 	}
 
 	void OnCollisionEnter(Collision collision) {
-		body.velocity = Vector3.zero;
+		Vector3 movement = transform.forward * speed * 0.05f;
+
+		Debug.Log ("Collision");
+		//body.velocity = Vector3.zero;
+		//body.MovePosition (body.position - movement);
 	}
 }
