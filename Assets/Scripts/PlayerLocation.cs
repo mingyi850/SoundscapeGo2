@@ -6,11 +6,14 @@ using Mapbox.Utils;
 using Mapbox.Unity.Map;
 using Mapbox.Unity.Location;
 using Scripts.BingMapClasses;
+using UnityEngine.UI;
 
 public class PlayerLocation : MonoBehaviour {
 	
 	private AbstractMap abstractMap; 
 	private Vector2d mapCenter;
+	public Text infoTextBox;
+	private List<BingMapsClasses.Result> resultsList;
 
 	// Use this for initialization
 	IEnumerator Start () {
@@ -47,12 +50,20 @@ public class PlayerLocation : MonoBehaviour {
 		double longitude = currentLocation.y;
 		StartCoroutine(requestPoiFromBingMaps (latitude, longitude, 5.0));
 
-		Debug.Log ("Current Location: " + getLongLat ().ToString ());
+		Debug.Log (resultsList [1].AddressLine);
+		infoTextBox.transform.parent.gameObject.SetActive (true);
+		string infoPanelString = "";
+		int x = 1;
+		foreach (BingMapsClasses.Result result in resultsList) {
+			infoPanelString = (infoPanelString + x + ". " + result.DisplayName + " , " + result.AddressLine + " , " + result.EntityTypeID + "\n");
+			x++;
+		}
+		infoTextBox.text = infoPanelString;
 
 
 	}
 
-	IEnumerator requestPoiFromBingMaps(double latitude, double longitude, double distance) {
+	 IEnumerator requestPoiFromBingMaps(double latitude, double longitude, double distance) {
 		string bingMapsApiKey = "Aul2Lj8luxSAtsuBPTb0qlqhXc6kwdTZvQGvGkOc_h_Jg3HI_2F-V6BeeHwHZZ4E";
 		string dataAccessId = "c2ae584bbccc4916a0acf75d1e6947b4";
 		string dataSourceName = "NavteqEU";
@@ -64,17 +75,23 @@ public class PlayerLocation : MonoBehaviour {
 		
 		string queryURL = generateQueryUrlNearby(dataAccessId, dataSourceName, entityTypeName, latitude, longitude, distance, returnParams, poiCount, dataFormat, bingMapsApiKey);
 		WWW request = new WWW (queryURL);
-		StartCoroutine (checkResponse(request));
-		yield return new WaitUntil (() => request.isDone);
-
-		string jsonData = System.Text.Encoding.UTF8.GetString (request.bytes, 0, request.bytes.Length);
-
-		BingMapsClasses.RootObject rootObject = BingMapsClasses.getRootObject(jsonData);
-
-		for (int x = 0; x < rootObject.d.results.Count; x++) {
-			Debug.Log ("Location " + x + ":: " + rootObject.d.results [x].DisplayName);
+		float startTime = Time.time;
+		while (request.isDone == false) {
+			if (Time.time - startTime > 10) {
+				Debug.Log ("API TIMEOUT");
+				break;
+			}
+			Debug.Log ("Waiting : " + (Time.time - startTime) + " seconds elapsed");
 		}
+		if (request.isDone) {
+			string jsonData = System.Text.Encoding.UTF8.GetString (request.bytes, 0, request.bytes.Length);
 
+			BingMapsClasses.RootObject rootObject = BingMapsClasses.getRootObject (jsonData);
+
+			resultsList = rootObject.d.results;
+			yield return null;
+		}
+		resultsList = new List<BingMapsClasses.Result> ();
 
 
 
@@ -97,16 +114,8 @@ public class PlayerLocation : MonoBehaviour {
 
 
 
-
-
-
-
-	private IEnumerator checkResponse(WWW request) {
-		
-		yield return request;
-
-		Debug.Log (request.text);
-
+	void updateInfoPanel(Text textBox, string content) {
+		textBox.text = content;
 	}
 
 }

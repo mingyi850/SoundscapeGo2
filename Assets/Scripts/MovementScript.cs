@@ -22,6 +22,7 @@ public class MovementScript : MonoBehaviour
 	private PlayerLocation playerLocation;
 
 
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -40,9 +41,9 @@ public class MovementScript : MonoBehaviour
 		
 		// Get movement input value
 		float movementInput = GetMovementInput();
-
+		float turbo = getTurboInput ();
 		// Determine amount to move based on current forward direction and speed
-		Vector3 movement = transform.forward * movementInput * speed * Time.deltaTime;
+		Vector3 movement = transform.forward * movementInput * speed * Time.deltaTime * turbo;
 
 		// Move our Rigidbody to this position
 		controller.Move(movement);
@@ -102,6 +103,17 @@ public class MovementScript : MonoBehaviour
 		}
 	}
 
+	float getTurboInput() {
+		KeyCode turbo = KeyCode.LeftShift;
+		if (Input.GetKey(turbo)) {
+			return 4f;
+		}
+		else {
+			return 1f;
+		}
+	}
+			
+
 	void OnCollisionEnter(Collision collision) {
 		Vector3 movement = transform.forward * speed * 0.05f;
 
@@ -109,4 +121,6 @@ public class MovementScript : MonoBehaviour
 		//body.velocity = Vector3.zero;
 		//body.MovePosition (body.position - movement);
 	}
+
+
 }
