@@ -6,6 +6,7 @@ using Mapbox.Utils;
 using Mapbox.Unity.Map;
 using Mapbox.Unity.Location;
 using Scripts.BingMapClasses;
+using Scripts.DistanceCalc;
 using UnityEngine.UI;
 
 public class PlayerLocation : MonoBehaviour {
@@ -43,33 +44,46 @@ public class PlayerLocation : MonoBehaviour {
 
 	}
 
+	public Vector3 getUnityPos(double lat, double lon) {
+		Vector2 latlon = new Vector2((float)(lat - mapCenter.x), (float)(lon - mapCenter.y));
+		return VectorExtensions.AsUnityPosition (latlon, mapCenter, (abstractMap.WorldRelativeScale * 1.5f));
+	}
+
 	public void getNearbyFeatures() {
 
 		Vector2d currentLocation = getLongLat ();
 		double latitude = currentLocation.x;
 		double longitude = currentLocation.y;
-		StartCoroutine(requestPoiFromBingMaps (latitude, longitude, 5.0));
 
-		Debug.Log (resultsList [1].AddressLine);
+
 		infoTextBox.transform.parent.gameObject.SetActive (true);
 		string infoPanelString = "";
 		int x = 1;
-		foreach (BingMapsClasses.Result result in resultsList) {
-			infoPanelString = (infoPanelString + x + ". " + result.DisplayName + " , " + result.AddressLine + " , " + result.EntityTypeID + "\n");
+		List<BingMapsClasses.Result> newResultsList = BingMapsClasses.requestPoiFromBingMaps (latitude, longitude, 5.0);
+		foreach (BingMapsClasses.Result result in newResultsList) {
+			double resultLong = result.Longitude;
+			double resultLat = result.Latitude;
+			Vector3 unityPos = getUnityPos (resultLat, resultLong);
+			Debug.Log ("Transform String: " + unityPos.ToString ());
+			Debug.Log ("Angle: " + getRelativeDirection (unityPos));
+			double distanceFromPlayerM = DistanceCalculator.getDistanceBetweenPlaces (longitude, latitude, resultLong, resultLat) * 1000;
+			infoPanelString = (infoPanelString + x + ". " + result.DisplayName + " , " + result.AddressLine + " , " + result.EntityTypeID + " " + distanceFromPlayerM + "m \n");
 			x++;
 		}
 		infoTextBox.text = infoPanelString;
+		Debug.Log (infoPanelString);
+
 
 
 	}
 
-	 IEnumerator requestPoiFromBingMaps(double latitude, double longitude, double distance) {
+	 /*IEnumerator requestPoiFromBingMaps(double latitude, double longitude, double distance) {
 		string bingMapsApiKey = "Aul2Lj8luxSAtsuBPTb0qlqhXc6kwdTZvQGvGkOc_h_Jg3HI_2F-V6BeeHwHZZ4E";
 		string dataAccessId = "c2ae584bbccc4916a0acf75d1e6947b4";
 		string dataSourceName = "NavteqEU";
 		string entityTypeName = "NavteqPOIs";
 		string[] returnParams = { "DisplayName", "Name", "AddressLine", "EntityTypeID", "Latitude", "Longitude" };
-		int poiCount = 10;
+		int poiCount = 3;
 		string dataFormat = "json";
 
 		
@@ -111,11 +125,17 @@ public class PlayerLocation : MonoBehaviour {
 		Debug.Log (queryURL);
 		return queryURL;
 	}
-
+	*/
 
 
 	void updateInfoPanel(Text textBox, string content) {
 		textBox.text = content;
 	}
 
+	float getRelativeDirection(Vector3 targetPosition) {
+		float relativeAngle = 0.0f;
+		Vector3 targetDir = targetPosition - transform.position;
+		relativeAngle = Vector3.Angle (transform.forward, targetDir);
+		return relativeAngle;
+	}
 }

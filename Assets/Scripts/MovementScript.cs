@@ -59,6 +59,7 @@ public class MovementScript : MonoBehaviour
 
 		// Rotate our Rigidbody by this amount
 		body.MoveRotation(body.rotation * rotation);
+		//Debug.Log ("Direction Facing: " + transform.forward.ToString ());
 	}
 
 	// Returns input values of 0, 1 or -1 based on whether Player tries to move forward or back
@@ -121,6 +122,7 @@ public class MovementScript : MonoBehaviour
 		//body.velocity = Vector3.zero;
 		//body.MovePosition (body.position - movement);
 	}
+
 
 
 }
