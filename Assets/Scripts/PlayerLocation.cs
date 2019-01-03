@@ -44,6 +44,11 @@ public class PlayerLocation : MonoBehaviour {
 
 	}
 
+	public Vector3 getUnityPos(double lat, double lon) {
+		Vector2 latlon = new Vector2((float)(lat - mapCenter.x), (float)(lon - mapCenter.y));
+		return VectorExtensions.AsUnityPosition (latlon, mapCenter, (abstractMap.WorldRelativeScale * 1.5f));
+	}
+
 	public void getNearbyFeatures() {
 
 		Vector2d currentLocation = getLongLat ();
@@ -58,11 +63,16 @@ public class PlayerLocation : MonoBehaviour {
 		foreach (BingMapsClasses.Result result in newResultsList) {
 			double resultLong = result.Longitude;
 			double resultLat = result.Latitude;
+			Vector3 unityPos = getUnityPos (resultLat, resultLong);
+			Debug.Log ("Transform String: " + unityPos.ToString ());
+			Debug.Log ("Angle: " + getRelativeDirection (unityPos));
 			double distanceFromPlayerM = DistanceCalculator.getDistanceBetweenPlaces (longitude, latitude, resultLong, resultLat) * 1000;
 			infoPanelString = (infoPanelString + x + ". " + result.DisplayName + " , " + result.AddressLine + " , " + result.EntityTypeID + " " + distanceFromPlayerM + "m \n");
 			x++;
 		}
 		infoTextBox.text = infoPanelString;
+		Debug.Log (infoPanelString);
+
 
 
 	}
@@ -122,4 +132,10 @@ public class PlayerLocation : MonoBehaviour {
 		textBox.text = content;
 	}
 
+	float getRelativeDirection(Vector3 targetPosition) {
+		float relativeAngle = 0.0f;
+		Vector3 targetDir = targetPosition - transform.position;
+		relativeAngle = Vector3.Angle (transform.forward, targetDir);
+		return relativeAngle;
+	}
 }
