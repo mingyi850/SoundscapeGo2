@@ -6,7 +6,6 @@ using Mapbox.Utils;
 using Mapbox.Unity.Map;
 using Mapbox.Unity.Location;
 using Scripts.BingMapClasses;
-using Scripts.DistanceCalc;
 using UnityEngine.UI;
 
 public class PlayerLocation : MonoBehaviour {
@@ -49,17 +48,14 @@ public class PlayerLocation : MonoBehaviour {
 		Vector2d currentLocation = getLongLat ();
 		double latitude = currentLocation.x;
 		double longitude = currentLocation.y;
+		StartCoroutine(requestPoiFromBingMaps (latitude, longitude, 5.0));
 
-
+		Debug.Log (resultsList [1].AddressLine);
 		infoTextBox.transform.parent.gameObject.SetActive (true);
 		string infoPanelString = "";
 		int x = 1;
-		List<BingMapsClasses.Result> newResultsList = BingMapsClasses.requestPoiFromBingMaps (latitude, longitude, 5.0);
-		foreach (BingMapsClasses.Result result in newResultsList) {
-			double resultLong = result.Longitude;
-			double resultLat = result.Latitude;
-			double distanceFromPlayerM = DistanceCalculator.getDistanceBetweenPlaces (longitude, latitude, resultLong, resultLat) * 1000;
-			infoPanelString = (infoPanelString + x + ". " + result.DisplayName + " , " + result.AddressLine + " , " + result.EntityTypeID + " " + distanceFromPlayerM + "m \n");
+		foreach (BingMapsClasses.Result result in resultsList) {
+			infoPanelString = (infoPanelString + x + ". " + result.DisplayName + " , " + result.AddressLine + " , " + result.EntityTypeID + "\n");
 			x++;
 		}
 		infoTextBox.text = infoPanelString;
@@ -67,13 +63,13 @@ public class PlayerLocation : MonoBehaviour {
 
 	}
 
-	 /*IEnumerator requestPoiFromBingMaps(double latitude, double longitude, double distance) {
+	 IEnumerator requestPoiFromBingMaps(double latitude, double longitude, double distance) {
 		string bingMapsApiKey = "Aul2Lj8luxSAtsuBPTb0qlqhXc6kwdTZvQGvGkOc_h_Jg3HI_2F-V6BeeHwHZZ4E";
 		string dataAccessId = "c2ae584bbccc4916a0acf75d1e6947b4";
 		string dataSourceName = "NavteqEU";
 		string entityTypeName = "NavteqPOIs";
 		string[] returnParams = { "DisplayName", "Name", "AddressLine", "EntityTypeID", "Latitude", "Longitude" };
-		int poiCount = 3;
+		int poiCount = 10;
 		string dataFormat = "json";
 
 		
@@ -115,7 +111,7 @@ public class PlayerLocation : MonoBehaviour {
 		Debug.Log (queryURL);
 		return queryURL;
 	}
-	*/
+
 
 
 	void updateInfoPanel(Text textBox, string content) {
