@@ -6,19 +6,18 @@ using Mapbox.Utils;
 using Mapbox.Unity.Map;
 using Mapbox.Unity.Location;
 using Scripts.BingMapClasses;
-using Scripts.DistanceCalc;
 using UnityEngine.UI;
 
 public class PlayerLocation : MonoBehaviour {
-	
-	private AbstractMap abstractMap; 
+
+	private AbstractMap abstractMap;
 	private Vector2d mapCenter;
 	public Text infoTextBox;
 	private List<BingMapsClasses.Result> resultsList;
 
 	// Use this for initialization
 	IEnumerator Start () {
-		
+
 		abstractMap = GameObject.Find("Map").GetComponent<AbstractMap>();
 
 		yield return new WaitUntil(() => abstractMap.isReady == true);
@@ -26,7 +25,7 @@ public class PlayerLocation : MonoBehaviour {
 		mapCenter = abstractMap.getCenterLongLat ();
 		Debug.Log (mapCenter.ToString ());
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		//Debug.Log("CurrentPosition is: " + getLongLat().ToString());
@@ -54,8 +53,9 @@ public class PlayerLocation : MonoBehaviour {
 		Vector2d currentLocation = getLongLat ();
 		double latitude = currentLocation.x;
 		double longitude = currentLocation.y;
+		StartCoroutine(requestPoiFromBingMaps (latitude, longitude, 5.0));
 
-
+		Debug.Log (resultsList [1].AddressLine);
 		infoTextBox.transform.parent.gameObject.SetActive (true);
 		string infoPanelString = "";
 		int x = 1;
@@ -77,16 +77,16 @@ public class PlayerLocation : MonoBehaviour {
 
 	}
 
-	 /*IEnumerator requestPoiFromBingMaps(double latitude, double longitude, double distance) {
+	 IEnumerator requestPoiFromBingMaps(double latitude, double longitude, double distance) {
 		string bingMapsApiKey = "Aul2Lj8luxSAtsuBPTb0qlqhXc6kwdTZvQGvGkOc_h_Jg3HI_2F-V6BeeHwHZZ4E";
 		string dataAccessId = "c2ae584bbccc4916a0acf75d1e6947b4";
 		string dataSourceName = "NavteqEU";
 		string entityTypeName = "NavteqPOIs";
 		string[] returnParams = { "DisplayName", "Name", "AddressLine", "EntityTypeID", "Latitude", "Longitude" };
-		int poiCount = 3;
+		int poiCount = 10;
 		string dataFormat = "json";
 
-		
+
 		string queryURL = generateQueryUrlNearby(dataAccessId, dataSourceName, entityTypeName, latitude, longitude, distance, returnParams, poiCount, dataFormat, bingMapsApiKey);
 		WWW request = new WWW (queryURL);
 		float startTime = Time.time;
@@ -125,7 +125,7 @@ public class PlayerLocation : MonoBehaviour {
 		Debug.Log (queryURL);
 		return queryURL;
 	}
-	*/
+
 
 
 	void updateInfoPanel(Text textBox, string content) {
