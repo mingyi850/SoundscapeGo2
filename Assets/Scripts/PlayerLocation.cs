@@ -8,12 +8,14 @@ using Mapbox.Unity.Location;
 using Scripts.BingMapClasses;
 using Scripts.DistanceCalc;
 using UnityEngine.UI;
+using TMPro;
+using BingMapsEntities;
 
 public class PlayerLocation : MonoBehaviour {
 	
 	private AbstractMap abstractMap; 
 	private Vector2d mapCenter;
-	public Text infoTextBox;
+	public TextMeshProUGUI infoTextMesh;
 	private List<BingMapsClasses.Result> resultsList;
 
 	// Use this for initialization
@@ -56,7 +58,7 @@ public class PlayerLocation : MonoBehaviour {
 		double longitude = currentLocation.y;
 
 
-		infoTextBox.transform.parent.gameObject.SetActive (true);
+		infoTextMesh.transform.parent.gameObject.SetActive (true);
 		string infoPanelString = "";
 		int x = 1;
 		List<BingMapsClasses.Result> newResultsList = BingMapsClasses.requestPoiFromBingMaps (latitude, longitude, 5.0);
@@ -67,10 +69,11 @@ public class PlayerLocation : MonoBehaviour {
 			Debug.Log ("Transform String: " + unityPos.ToString ());
 			Debug.Log ("Angle: " + getRelativeDirection (unityPos));
 			double distanceFromPlayerM = DistanceCalculator.getDistanceBetweenPlaces (longitude, latitude, resultLong, resultLat) * 1000;
-			infoPanelString = (infoPanelString + x + ". " + result.DisplayName + " , " + result.AddressLine + " , " + result.EntityTypeID + " " + distanceFromPlayerM + "m \n");
+			infoPanelString = (infoPanelString + x + ". " + result.DisplayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId(result.EntityTypeID) + " " + distanceFromPlayerM + "m \n\n");
 			x++;
 		}
-		infoTextBox.text = infoPanelString;
+
+		infoTextMesh.text = infoPanelString;
 		Debug.Log (infoPanelString);
 
 
