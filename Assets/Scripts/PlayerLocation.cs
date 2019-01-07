@@ -10,6 +10,7 @@ using Scripts.DistanceCalc;
 using UnityEngine.UI;
 using TMPro;
 using BingMapsEntities;
+using TTS;
 
 public class PlayerLocation : MonoBehaviour {
 	
@@ -17,12 +18,13 @@ public class PlayerLocation : MonoBehaviour {
 	private Vector2d mapCenter;
 	public TextMeshProUGUI infoTextMesh;
 	private List<BingMapsClasses.Result> resultsList;
+	private TextToSpeechHandler ttsHandler;
 
 	// Use this for initialization
 	IEnumerator Start () {
 		
 		abstractMap = GameObject.Find("Map").GetComponent<AbstractMap>();
-
+		ttsHandler = GameObject.Find ("TextToSpeechHandler").GetComponent<TextToSpeechHandler> ();
 		yield return new WaitUntil(() => abstractMap.isReady == true);
 
 		mapCenter = abstractMap.getCenterLongLat ();
@@ -69,12 +71,14 @@ public class PlayerLocation : MonoBehaviour {
 			Debug.Log ("Transform String: " + unityPos.ToString ());
 			Debug.Log ("Angle: " + getRelativeDirection (unityPos));
 			double distanceFromPlayerM = DistanceCalculator.getDistanceBetweenPlaces (longitude, latitude, resultLong, resultLat) * 1000;
-			infoPanelString = (infoPanelString + x + ". " + result.DisplayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId(result.EntityTypeID) + " " + distanceFromPlayerM + "m \n\n");
+			infoPanelString = (infoPanelString + x + ". " + result.DisplayName + " , " + /*result.AddressLine + " , " + */ BingMapsEntityId.getEntityNameFromId(result.EntityTypeID) + "\n\n");
 			x++;
 		}
 
 		infoTextMesh.text = infoPanelString;
+		StartCoroutine (ttsHandler.GetTextToSpeech (infoPanelString));
 		Debug.Log (infoPanelString);
+
 
 
 
