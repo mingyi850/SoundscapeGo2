@@ -20,7 +20,7 @@ public class ScrollList : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        RefreshDisplay();
     }
 
     // Update is called once per frame
@@ -29,12 +29,27 @@ public class ScrollList : MonoBehaviour
         
     }
 
+    public void RefreshDisplay()
+    {
+    //    updateDestinationsList("peepee");
+        AddButtons();
+    }
+
+    /* private void updateDestinationsList(string currentString)
+    {
+
+    } */
+
     private void AddButtons()
     {
         for (int i = 0; i < destinationList.Count; i++)
         {
             Destination destination = destinationList[i];
             GameObject newButton = buttonObjectPool.GetObject();
+            newButton.transform.SetParent(contentPanel);
+
+            SampleButton sampleButton = newButton.GetComponent<SampleButton>();
+            sampleButton.Setup(destination, this);
         }
     }
 }
