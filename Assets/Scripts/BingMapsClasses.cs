@@ -60,7 +60,7 @@ namespace Scripts.BingMapClasses {
 			string dataSourceName = "NavteqEU";
 			string entityTypeName = "NavteqPOIs";
 			string[] returnParams = { "DisplayName", "Name", "AddressLine", "EntityTypeID", "Latitude", "Longitude" };
-			int poiCount = 3;
+			int poiCount = 5;
 			string dataFormat = "json";
 
 
