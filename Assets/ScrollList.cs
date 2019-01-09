@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +10,13 @@ public class Destination
     public string destinationName;
     public float longitude;
     public float latitude;
+
+    public Destination(string nameLabel, float lat, float longit)
+    {
+        destinationName = nameLabel;
+        latitude = lat;
+        longitude = longit;
+    }
 }
 
 public class ScrollList : MonoBehaviour
@@ -28,7 +36,6 @@ public class ScrollList : MonoBehaviour
     {
         
     }
-
 
 
     public void RefreshDisplay()
