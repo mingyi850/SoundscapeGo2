@@ -801,10 +801,10 @@ PlayerSettings:
   facebookXfbml: 0
   facebookFrictionlessRequests: 1
   apiCompatibilityLevel: 2
-  cloudProjectId: 628456fb-a15a-4273-8026-e3e99d326b05
+  cloudProjectId: d7770dfc-1144-46e8-80dd-e6de7649266b
   framebufferDepthMemorylessMode: 0
-  projectName: SoundscapeGo
-  organizationId: mingyi850
+  projectName: SoundscapeGo (1)
+  organizationId: repinsky13
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0

@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using Scripts.DistanceCalc;
 
 public class SampleButton : MonoBehaviour
 {
@@ -19,11 +21,6 @@ public class SampleButton : MonoBehaviour
         
     }
 
-    private double toRadian(double val)
-    {
-        return (Math.PI / 180) * val;
-    }
-
     double RoundMeters(double num)
     {
         double intPart = Math.Truncate(num);
@@ -31,25 +28,13 @@ public class SampleButton : MonoBehaviour
         return rem >= 5 ? (intPart - rem + 10) : (intPart - rem);
     }   
 
-    public double Distance (Destination pos1)
-    {
-        Destination pos2 = deviceLocation;
-        double R = 6371;
-        double dLat = this.toRadian(pos2.latitude - pos1.latitude);
-        double dLon = this.toRadian(pos2.longitude - pos1.longitude);
-        double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) + Math.Cos(this.toRadian(pos1.latitude)) * Math.Cos(this.toRadian(pos2.latitude)) * Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
-        double c = 2 * Math.Asin(Math.Min(1, Math.Sqrt(a)));
-        double d = R * c;
-        return d;
-    }
-
     public void Setup(Destination currentDestination, ScrollList currentScrollList)
     {
         destination = currentDestination;
         nameLabel.text = destination.destinationName;
         destination.longitude = currentDestination.longitude;
         destination.latitude = currentDestination.latitude;
-        var distance = Distance(destination);
+        var distance = DistanceCalculator.getDistanceBetweenPlaces(destination.longitude, destination.latitude, deviceLocation.longitude, deviceLocation.latitude);
         if (distance < 1.0)
         {
             distance = RoundMeters(distance * 100);
@@ -58,5 +43,17 @@ public class SampleButton : MonoBehaviour
             distanceLabel.text = distance.ToString("0.00") + "km";
         }
         scrollList = currentScrollList;
+    }
+
+    public void passCoordinatesToNextScene()
+    {
+        PlayerPrefs.SetFloat("longitude", this.destination.longitude);
+        PlayerPrefs.SetFloat("latitude", this.destination.latitude);
+    }
+
+    public void LoadNextScene()
+    {
+        passCoordinatesToNextScene();
+        SceneManager.LoadScene("Navigation Scene");
     }
 }

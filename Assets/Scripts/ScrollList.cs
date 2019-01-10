@@ -40,14 +40,14 @@ public class ScrollList : MonoBehaviour
 
     public void RefreshDisplay()
     {
-    //    updateDestinationsList("peepee");
         AddButtons();
     }
 
-    /* private void updateDestinationsList(string currentString)
+    public void updateDestinationsList(string currentString)
     {
-
-    } */
+        
+        RefreshDisplay();
+    } 
 
     private void AddButtons()
     {
