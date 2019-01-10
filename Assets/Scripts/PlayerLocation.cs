@@ -141,8 +141,9 @@ public class PlayerLocation : MonoBehaviour {
 
 	float getRelativeDirection(Vector3 targetPosition) {
 		float relativeAngle = 0.0f;
+		Vector3 yaxis = new Vector3 (0, 1, 0);
 		Vector3 targetDir = targetPosition - transform.position;
-		relativeAngle = Vector3.Angle (transform.forward, targetDir);
+		relativeAngle = Vector3.SignedAngle (transform.forward, targetDir, yaxis);
 		return relativeAngle;
 	}
 }
