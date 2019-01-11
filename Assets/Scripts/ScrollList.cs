@@ -22,13 +22,19 @@ public class Destination
 public class ScrollList : MonoBehaviour
 {
     public List<Destination> destinationList;
+    private List<Destination> filteredDestinationList = new List<Destination>();
     public Transform contentPanel;
     public SimpleObjectPool buttonObjectPool;
+    public InputField searchBar;
 
     // Start is called before the first frame update
     void Start()
     {
-        RefreshDisplay();
+        for (int i = 0; i < destinationList.Count; i++)
+        {
+            filteredDestinationList.Add(destinationList[i]);
+        }
+        UpdateDestinationsList(searchBar);
     }
 
     // Update is called once per frame
@@ -37,26 +43,41 @@ public class ScrollList : MonoBehaviour
         
     }
 
-
-    public void RefreshDisplay()
+    public void UpdateDestinationsList(InputField searchField)
     {
-        AddButtons();
-    }
-
-    public void updateDestinationsList(string currentString)
-    {
-        
+        filteredDestinationList.Clear();
+        for (int i = 0; i < destinationList.Count; i++)
+        {
+            if (destinationList[i].destinationName.IndexOf(searchField.text, StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                filteredDestinationList.Add(destinationList[i]);
+            }
+        }
         RefreshDisplay();
     } 
 
+    public void RefreshDisplay()
+    {
+        RemoveButtons();
+        AddButtons();
+    }
+
+    private void RemoveButtons()
+    {
+        while (contentPanel.childCount > 0) 
+        {
+            GameObject toRemove = transform.GetChild(0).gameObject;
+            buttonObjectPool.ReturnObject(toRemove);
+        }
+    }
+
     private void AddButtons()
     {
-        for (int i = 0; i < destinationList.Count; i++)
+        for (int i = 0; i < filteredDestinationList.Count; i++)
         {
-            Destination destination = destinationList[i];
+            Destination destination = filteredDestinationList[i];
             GameObject newButton = buttonObjectPool.GetObject();
             newButton.transform.SetParent(contentPanel);
-
             SampleButton sampleButton = newButton.GetComponent<SampleButton>();
             sampleButton.Setup(destination, this);
         }
