@@ -17,18 +17,22 @@ public class PlayerLocation : MonoBehaviour {
 	private AbstractMap abstractMap; 
 	private Vector2d mapCenter;
 	public TextMeshProUGUI infoTextMesh;
+	public TextMeshProUGUI infoHeaderTextMesh;
 	private List<BingMapsClasses.Result> resultsList;
 	private TextToSpeechHandler ttsHandler;
+	private ILocationProvider locationProvider;
 
 	// Use this for initialization
 	IEnumerator Start () {
-		
+		locationProvider = GameObject.Find ("LocationProviderFactoryObject").GetComponent<LocationProviderFactory> ().TransformLocationProvider;
+		Debug.Log (locationProvider);
 		abstractMap = GameObject.Find("Map").GetComponent<AbstractMap>();
 		ttsHandler = GameObject.Find ("TextToSpeechHandler").GetComponent<TextToSpeechHandler> ();
 		yield return new WaitUntil(() => abstractMap.isReady == true);
 
 		mapCenter = abstractMap.getCenterLongLat ();
 		Debug.Log (mapCenter.ToString ());
+
 	}
 	
 	// Update is called once per frame
@@ -38,19 +42,22 @@ public class PlayerLocation : MonoBehaviour {
 
 	public Vector2d getLongLat() {
 		double newX, newY;
-
-		Vector2d longLatChange = VectorExtensions.GetGeoPosition(transform, mapCenter,  (abstractMap.WorldRelativeScale * 1.5f));
+		Vector2d newLatLong;
+		/*Vector2d longLatChange = VectorExtensions.GetGeoPosition(transform, mapCenter,  (abstractMap.WorldRelativeScale)); //* 1.5f
 		Debug.Log(mapCenter.ToString() + " from getLongLat");
 		newX = mapCenter.x + longLatChange.x;
-		newY = mapCenter.y + longLatChange.y;
+		newY = mapCenter.y + longLatChange.y;*/
 
-		return new Vector2d (newX, newY);
+		newLatLong = locationProvider.CurrentLocation.LatitudeLongitude;
+		return newLatLong;
+		//return new Vector2d (newX, newY);
+
 
 	}
 
 	public Vector3 getUnityPos(double lat, double lon) {
 		Vector2 latlon = new Vector2((float)(lat - mapCenter.x), (float)(lon - mapCenter.y));
-		return VectorExtensions.AsUnityPosition (latlon, mapCenter, (abstractMap.WorldRelativeScale * 1.5f));
+		return VectorExtensions.AsUnityPosition (latlon, abstractMap.CenterMercator, (abstractMap.WorldRelativeScale)); //* 1.5f
 	}
 
 	public void getNearbyFeatures() {
@@ -62,21 +69,66 @@ public class PlayerLocation : MonoBehaviour {
 
 		infoTextMesh.transform.parent.gameObject.SetActive (true);
 		string infoPanelString = "";
+		string readableString = "";
 		int x = 1;
-		List<BingMapsClasses.Result> newResultsList = BingMapsClasses.requestPoiFromBingMaps (latitude, longitude, 5.0);
+		List<BingMapsClasses.Result> newResultsList = BingMapsClasses.requestPoiFromBingMaps (latitude, longitude, 5.0, 5);
 		foreach (BingMapsClasses.Result result in newResultsList) {
 			double resultLong = result.Longitude;
 			double resultLat = result.Latitude;
 			Vector3 unityPos = getUnityPos (resultLat, resultLong);
-			Debug.Log ("Transform String: " + unityPos.ToString ());
-			Debug.Log ("Angle: " + getRelativeDirection (unityPos));
 			double distanceFromPlayerM = DistanceCalculator.getDistanceBetweenPlaces (longitude, latitude, resultLong, resultLat) * 1000;
-			infoPanelString = (infoPanelString + x + ". " + result.DisplayName + " , " + /*result.AddressLine + " , " + */ BingMapsEntityId.getEntityNameFromId(result.EntityTypeID) + "\n\n");
+			float relativeAngle = getRelativeDirection (unityPos);
+			string relativeDirectionString = DistanceCalculator.getRelativeDirectionString (relativeAngle);
+			infoPanelString = (infoPanelString + x + ". " + result.DisplayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId(result.EntityTypeID) + "\n\n");
+			readableString = (readableString + x + ". " + result.DisplayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId(result.EntityTypeID) + " , " + relativeDirectionString + "\n\n");
+			Debug.Log ("Distance: " + distanceFromPlayerM + " Direction: " + relativeAngle + " which is " + relativeDirectionString);
 			x++;
 		}
 
 		infoTextMesh.text = infoPanelString;
-		StartCoroutine (ttsHandler.GetTextToSpeech (infoPanelString));
+		StartCoroutine (ttsHandler.GetTextToSpeech (readableString));
+		Debug.Log (infoPanelString);
+
+
+
+
+	}
+
+	public void getAheadOfMe() {
+		int totalFeatureCount = 5;
+		Vector2d currentLocation = getLongLat ();
+		double latitude = currentLocation.x;
+		double longitude = currentLocation.y;
+
+
+		infoTextMesh.transform.parent.gameObject.SetActive (true);
+		string infoPanelString = "";
+		string readableString = "";
+		int x = 1;
+		int featureCount = 0;
+		List<BingMapsClasses.Result> newResultsList = BingMapsClasses.requestPoiFromBingMaps (latitude, longitude, 5.0, 20);
+		foreach (BingMapsClasses.Result result in newResultsList) {
+			double resultLong = result.Longitude;
+			double resultLat = result.Latitude;
+			Vector3 unityPos = getUnityPos (resultLat, resultLong);
+			float relativeAngle = getRelativeDirection (unityPos);
+			if (relativeAngle > -60.0f && relativeAngle < 60.0f) {
+				double distanceFromPlayerM = DistanceCalculator.getDistanceBetweenPlaces (longitude, latitude, resultLong, resultLat) * 1000;
+
+				string relativeDirectionString = DistanceCalculator.getRelativeDirectionString (relativeAngle);
+				infoPanelString = (infoPanelString + x + ". " + result.DisplayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId (result.EntityTypeID) + "\n\n");
+				readableString = (readableString + x + ". " + result.DisplayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId (result.EntityTypeID) + " , " + relativeDirectionString + "\n\n");
+				Debug.Log ("Distance: " + distanceFromPlayerM + " Direction: " + relativeAngle + " which is " + relativeDirectionString);
+				x++;
+				featureCount++;
+			}
+			if (featureCount == totalFeatureCount) {
+				break;
+			}
+		}
+		infoHeaderTextMesh.text = "Ahead of Me";
+		infoTextMesh.text = infoPanelString;
+		StartCoroutine (ttsHandler.GetTextToSpeech (readableString));
 		Debug.Log (infoPanelString);
 
 
@@ -142,7 +194,10 @@ public class PlayerLocation : MonoBehaviour {
 	float getRelativeDirection(Vector3 targetPosition) {
 		float relativeAngle = 0.0f;
 		Vector3 yaxis = new Vector3 (0, 1, 0);
-		Vector3 targetDir = targetPosition - transform.position;
+		Vector2d thisLongLat = getLongLat ();
+		double thisLat = thisLongLat.x;
+		double thisLong = thisLongLat.y;
+		Vector3 targetDir = targetPosition - getUnityPos (thisLat, thisLong);
 		relativeAngle = Vector3.SignedAngle (transform.forward, targetDir, yaxis);
 		return relativeAngle;
 	}

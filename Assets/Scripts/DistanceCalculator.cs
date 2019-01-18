@@ -19,6 +19,25 @@ namespace Scripts.DistanceCalc
 			double angle = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
 			return angle * RADIUS;
 		}
+
+		public static string getRelativeDirectionString(float relativeAngle) {
+			string returnString = "";
+			if (relativeAngle > -60.0f && relativeAngle < 60.0f) {
+				returnString += "Ahead of you ";
+			}
+			else if (relativeAngle < -120.0f || relativeAngle > 120.0f) {
+				returnString += "Behind you ";
+			}
+			if (relativeAngle > 20.0f && relativeAngle < 160.0f) {
+				returnString += "To your right";
+			}
+			else if (relativeAngle < -20.0f && relativeAngle > -160.0f) {
+				returnString += "To your left";
+			}
+			return returnString;
+		}
 	}
+
+
 }
 

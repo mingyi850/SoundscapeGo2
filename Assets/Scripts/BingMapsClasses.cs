@@ -54,13 +54,12 @@ namespace Scripts.BingMapClasses {
 			public D d;
 		}
 
-		public static List<Result> requestPoiFromBingMaps(double latitude, double longitude, double distance) {
+		public static List<Result> requestPoiFromBingMaps(double latitude, double longitude, double distance, int poiCount) {
 			string bingMapsApiKey = "Aul2Lj8luxSAtsuBPTb0qlqhXc6kwdTZvQGvGkOc_h_Jg3HI_2F-V6BeeHwHZZ4E";
 			string dataAccessId = "c2ae584bbccc4916a0acf75d1e6947b4";
 			string dataSourceName = "NavteqEU";
 			string entityTypeName = "NavteqPOIs";
 			string[] returnParams = { "DisplayName", "Name", "AddressLine", "EntityTypeID", "Latitude", "Longitude" };
-			int poiCount = 5;
 			string dataFormat = "json";
 
 
@@ -72,7 +71,7 @@ namespace Scripts.BingMapClasses {
 					Debug.Log ("API TIMEOUT");
 					break;
 				}
-				Debug.Log ("Waiting : " + (Time.time - startTime) + " seconds elapsed");
+
 			}
 			if (request.isDone) {
 				string jsonData = System.Text.Encoding.UTF8.GetString (request.bytes, 0, request.bytes.Length);
