@@ -8,6 +8,7 @@ namespace BingMapsEntities
 	public class BingMapsEntityId :MonoBehaviour
 	{
 		public static Dictionary<string, string> map;
+		public static Dictionary<string, string> reverseMap;
 
 		int[] codes = {2084, 3578, 4013, 4100, 4170, 4444, 4482, 4493, 4580, 4581, 5000, 5400, 5511, 5512, 5540, 5571, 5800, 5813, 5999, 6000, 6512,
 			7011,
@@ -169,8 +170,10 @@ namespace BingMapsEntities
 			
 		void Awake() {
 			map = new Dictionary<string, string> ();
+			reverseMap = new Dictionary<string, string> ();
 			for (int x = 0; x < codes.Length; x++) {
 				map.Add ((codes [x]).ToString(), entities[x]);
+				reverseMap.Add (entities [x], codes [x].ToString ());
 			}
 
 			Debug.Log (map["9999"]);
@@ -178,6 +181,10 @@ namespace BingMapsEntities
 		
 		public static string getEntityNameFromId(string id) {
 			return map [id];
+		}
+
+		public static string getIdFromEntityName(string entityName) {
+			return reverseMap [entityName];
 		}
 
 	}
