@@ -56,7 +56,7 @@ public class PlayerLocation : MonoBehaviour {
 	}
 
 	public Vector3 getUnityPos(double lat, double lon) {
-		Vector2 latlon = new Vector2((float)(lat - mapCenter.x), (float)(lon - mapCenter.y));
+		Vector2 latlon = new Vector2((float)(lat), (float)(lon));
 		return VectorExtensions.AsUnityPosition (latlon, abstractMap.CenterMercator, (abstractMap.WorldRelativeScale)); //* 1.5f
 	}
 
@@ -70,6 +70,7 @@ public class PlayerLocation : MonoBehaviour {
 		infoTextMesh.transform.parent.gameObject.SetActive (true);
 		string infoPanelString = "";
 		string readableString = "";
+		string singleReadableString = "";
 		int x = 1;
 		List<BingMapsClasses.Result> newResultsList = BingMapsClasses.requestPoiFromBingMaps (latitude, longitude, 5.0, 5);
 		foreach (BingMapsClasses.Result result in newResultsList) {
@@ -81,12 +82,16 @@ public class PlayerLocation : MonoBehaviour {
 			string relativeDirectionString = DistanceCalculator.getRelativeDirectionString (relativeAngle);
 			infoPanelString = (infoPanelString + x + ". " + result.DisplayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId(result.EntityTypeID) + "\n\n");
 			readableString = (readableString + x + ". " + result.DisplayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId(result.EntityTypeID) + " , " + relativeDirectionString + "\n\n");
+			singleReadableString = x + ". " + result.DisplayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId (result.EntityTypeID) + " , " + relativeDirectionString;
 			Debug.Log ("Distance: " + distanceFromPlayerM + " Direction: " + relativeAngle + " which is " + relativeDirectionString);
+			StartCoroutine (ttsHandler.GetTextToSpeech (singleReadableString));
+			ttsHandler.addAudioDir (unityPos);
 			x++;
 		}
 
 		infoTextMesh.text = infoPanelString;
-		StartCoroutine (ttsHandler.GetTextToSpeech (readableString));
+		Debug.Log ("THIS PLAYER IS AT: " + getUnityPos (currentLocation.x, currentLocation.y).ToString());
+		ttsHandler.StartCoroutine (ttsHandler.playDirAudioQueue ());
 		Debug.Log (infoPanelString);
 
 

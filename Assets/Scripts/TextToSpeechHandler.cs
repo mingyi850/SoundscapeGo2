@@ -9,6 +9,9 @@ using System.Net;
 using System.Text;
 using System.IO;
 using System.Threading;
+using Mapbox.Unity;
+using Mapbox.Unity.Map;
+using Mapbox.Utils;
 
 namespace TTS
 {
@@ -19,6 +22,8 @@ namespace TTS
 		private string currentToken;
 		private Timer accessTokenRenewer;
 		private AudioSource voiceSource;
+		private Queue<AudioClip> audioQueue;
+		private Queue<Vector3> audioDirQueue;
 		string ttsHost = "https://westeurope.tts.speech.microsoft.com/cognitiveservices/v1";
 
 
@@ -27,6 +32,8 @@ namespace TTS
 
 		void Awake()
 		{
+			audioQueue = new Queue<AudioClip> ();
+			audioDirQueue = new Queue<Vector3> ();
 			voiceSource = gameObject.GetComponent<AudioSource> ();
 			Debug.Log ("Fetching Token from TTS server");
 			StartCoroutine(FetchToken(FetchTokenUri, subscriptionKey));
@@ -189,17 +196,51 @@ namespace TTS
 					if (request.isDone) {
 						Debug.Log (request.downloadedBytes);
 						AudioClip audioFile = downloader.audioClip;
-						Debug.Log (audioFile.length);
-						voiceSource.clip = audioFile;
-						voiceSource.Play ();
+						audioQueue.Enqueue (audioFile);
+						/*voiceSource.clip = audioQueue [0];
+						while (!voiceSource.isPlaying) {
+							audioQueue.Dequeue ();
+							voiceSource.clip = audioFile;
+							voiceSource.Play ();
+						}*/
 					}
 
 				}
 
 			}
 
+
+		}
+		public IEnumerator playDirAudioQueue() {
+			yield return new WaitWhile (() => audioQueue.Count < 5 || audioDirQueue.Count < 5);
+			Debug.Log ("Audio Queue: " + audioQueue.Count);
+			Debug.Log("Audio Dir: " + audioDirQueue.Count);
+			while (audioQueue.Count != 0){
+				yield return new WaitWhile (() => voiceSource.isPlaying);
+				voiceSource.clip = audioQueue.Dequeue();
+				Vector3 audioLocation = audioDirQueue.Dequeue();
+				this.transform.position = audioLocation;
+				Debug.Log ("Current Location: " + transform.position.ToString() + "    " + audioLocation.ToString());
+				voiceSource.Play ();
+
+			}
+			yield return null;
 		}
 
+		public IEnumerator playDirAudioFromQueue() {
+			yield return new WaitWhile (() => (audioQueue.Count < 1 || audioDirQueue.Count < 1));
+			yield return new WaitWhile (() => voiceSource.isPlaying);
+			Vector3 audioLocation = audioDirQueue.Dequeue ();
+			voiceSource.clip = audioQueue.Dequeue();
+			this.transform.position = audioLocation;
+			voiceSource.Play ();
+			yield return null;
+		}
+			
+		public void addAudioDir(Vector3 dir) {
+			Debug.Log (dir.ToString ());
+			audioDirQueue.Enqueue (dir);
+		}
 
 	}
 }
