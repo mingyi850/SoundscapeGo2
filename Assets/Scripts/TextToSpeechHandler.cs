@@ -153,7 +153,7 @@ namespace TTS
 			}
 				
 		}
-		public IEnumerator GetTextToSpeech(string text) {
+		public IEnumerator GetTextToSpeech(string text, int order) {
 			string accessToken = currentToken;
 			WWWForm form = new WWWForm ();
 			string body = @"<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='en-GB'>
@@ -196,6 +196,7 @@ namespace TTS
 					if (request.isDone) {
 						Debug.Log (request.downloadedBytes);
 						AudioClip audioFile = downloader.audioClip;
+						yield return new WaitWhile (() => audioQueue.Count < order);
 						audioQueue.Enqueue (audioFile);
 						/*voiceSource.clip = audioQueue [0];
 						while (!voiceSource.isPlaying) {
@@ -215,7 +216,7 @@ namespace TTS
 			yield return new WaitWhile (() => audioQueue.Count < 5 || audioDirQueue.Count < 5);
 			Debug.Log ("Audio Queue: " + audioQueue.Count);
 			Debug.Log("Audio Dir: " + audioDirQueue.Count);
-			while (audioQueue.Count != 0){
+			while (audioQueue.Count != 0 && audioDirQueue.Count != 0){
 				yield return new WaitWhile (() => voiceSource.isPlaying);
 				voiceSource.clip = audioQueue.Dequeue();
 				Vector3 audioLocation = audioDirQueue.Dequeue();

@@ -84,7 +84,7 @@ public class PlayerLocation : MonoBehaviour {
 			readableString = (readableString + x + ". " + result.DisplayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId(result.EntityTypeID) + " , " + relativeDirectionString + "\n\n");
 			singleReadableString = x + ". " + result.DisplayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId (result.EntityTypeID) + " , " + relativeDirectionString;
 			Debug.Log ("Distance: " + distanceFromPlayerM + " Direction: " + relativeAngle + " which is " + relativeDirectionString);
-			StartCoroutine (ttsHandler.GetTextToSpeech (singleReadableString));
+			StartCoroutine (ttsHandler.GetTextToSpeech (singleReadableString, (x-1)));
 			ttsHandler.addAudioDir (unityPos);
 			x++;
 		}
@@ -133,7 +133,7 @@ public class PlayerLocation : MonoBehaviour {
 		}
 		infoHeaderTextMesh.text = "Ahead of Me";
 		infoTextMesh.text = infoPanelString;
-		StartCoroutine (ttsHandler.GetTextToSpeech (readableString));
+		StartCoroutine (ttsHandler.GetTextToSpeech (readableString, 0));
 		Debug.Log (infoPanelString);
 
 
