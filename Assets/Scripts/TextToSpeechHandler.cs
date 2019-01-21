@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using UnityEngine.Networking;
 using System.Collections.Generic;
@@ -95,8 +95,9 @@ namespace TTS
 			string accessToken = currentToken;
 			WWWForm form = new WWWForm ();
 			string text = "Hi, my name is joe";
-			string body = @"<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='en-US'>
-              <voice name='Microsoft Server Speech Text to Speech Voice (en-US, ZiraRUS)'>" +
+			string body = @"<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='en-GB'>
+              <voice name='Microsoft Server Speech Text to Speech Voice (en-GB, HazelRUS)'>" +
+
 				text + "</voice></speak>";
 			using (var request = new UnityWebRequest())
 			{
@@ -148,8 +149,8 @@ namespace TTS
 		public IEnumerator GetTextToSpeech(string text) {
 			string accessToken = currentToken;
 			WWWForm form = new WWWForm ();
-			string body = @"<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='en-US'>
-              <voice name='Microsoft Server Speech Text to Speech Voice (en-US, ZiraRUS)'>" +
+			string body = @"<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='en-GB'>
+              <voice name='Microsoft Server Speech Text to Speech Voice (en-GB, HazelRUS)'>" +
 				text + "</voice></speak>";
 			using (var request = new UnityWebRequest())
 			{
@@ -202,4 +203,3 @@ namespace TTS
 
 	}
 }
-
