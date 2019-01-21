@@ -176,7 +176,7 @@ namespace BingMapsEntities
 				reverseMap.Add (entities [x], codes [x].ToString ());
 			}
 
-			Debug.Log (map["9999"]);
+			//Debug.Log (map["9999"]);
 		}
 		
 		public static string getEntityNameFromId(string id) {
