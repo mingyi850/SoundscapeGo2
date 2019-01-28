@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Mapbox.Utils;
 using Scripts.DistanceCalc;
 
 public class SampleButton : MonoBehaviour
@@ -9,7 +10,7 @@ public class SampleButton : MonoBehaviour
     public Button button;
     public Text nameLabel;
     public Text distanceLabel;
-    Destination deviceLocation = new Destination("Device", 51.523180F, -0.132522F);  
+    public Vector2d deviceLocation = new Vector2d( 51.523180F, -0.132522F);  
 
 
     private Destination destination;
@@ -34,7 +35,7 @@ public class SampleButton : MonoBehaviour
         nameLabel.text = destination.destinationName;
         destination.longitude = currentDestination.longitude;
         destination.latitude = currentDestination.latitude;
-        var distance = DistanceCalculator.getDistanceBetweenPlaces(destination.longitude, destination.latitude, deviceLocation.longitude, deviceLocation.latitude);
+        var distance = DistanceCalculator.getDistanceBetweenPlaces(destination.longitude, destination.latitude, deviceLocation.y, deviceLocation.x);
         if (distance < 1.0)
         {
             distance = RoundMeters(distance * 100);
