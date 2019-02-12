@@ -39,6 +39,7 @@ namespace Scripts.BingMapClasses {
 			public string EntityTypeID;
 			public double Latitude;
 			public double Longitude;
+			public string websiteUrl;
 		}
 
 		[System.Serializable]

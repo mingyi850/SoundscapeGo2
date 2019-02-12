@@ -24,6 +24,7 @@ namespace TTS
 		private AudioSource voiceSource;
 		private Queue<AudioClip> audioQueue;
 		private Queue<Vector3> audioDirQueue;
+		public AudioSource testCube;
 		string ttsHost = "https://westeurope.tts.speech.microsoft.com/cognitiveservices/v1";
 
 
@@ -220,11 +221,14 @@ namespace TTS
 				yield return new WaitWhile (() => voiceSource.isPlaying);
 				voiceSource.clip = audioQueue.Dequeue();
 				Vector3 audioLocation = audioDirQueue.Dequeue();
+				audioLocation.y = 5;
 				this.transform.position = audioLocation;
 				Debug.Log ("Current Location: " + transform.position.ToString() + "    " + audioLocation.ToString());
 				voiceSource.Play ();
 
 			}
+			audioQueue.Clear ();
+			audioDirQueue.Clear ();
 			yield return null;
 		}
 
@@ -234,7 +238,12 @@ namespace TTS
 			Vector3 audioLocation = audioDirQueue.Dequeue ();
 			voiceSource.clip = audioQueue.Dequeue();
 			this.transform.position = audioLocation;
-			voiceSource.Play ();
+			//voiceSource.Play ();
+			if (testCube != null) {
+				testCube.clip = voiceSource.clip;
+				testCube.Play ();
+			}
+
 			yield return null;
 		}
 			

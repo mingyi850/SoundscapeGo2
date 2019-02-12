@@ -9,6 +9,7 @@ using Scripts.BingMapClasses;
 using Scripts.DistanceCalc;
 using UnityEngine.UI;
 using TMPro;
+using BingSearch;
 using BingMapsEntities;
 using TTS;
 
@@ -21,6 +22,7 @@ public class PlayerLocation : MonoBehaviour {
 	private List<BingMapsClasses.Result> resultsList;
 	private TextToSpeechHandler ttsHandler;
 	private ILocationProvider locationProvider;
+	private BingSearchHandler bsHandler;
 
 	// Use this for initialization
 	IEnumerator Start () {
@@ -28,6 +30,7 @@ public class PlayerLocation : MonoBehaviour {
 		Debug.Log (locationProvider);
 		abstractMap = GameObject.Find("Map").GetComponent<AbstractMap>();
 		ttsHandler = GameObject.Find ("TextToSpeechHandler").GetComponent<TextToSpeechHandler> ();
+		bsHandler = GameObject.Find ("BingSearchHandler").GetComponent<BingSearchHandler> ();
 		yield return new WaitUntil(() => abstractMap.isReady == true);
 
 		mapCenter = abstractMap.getCenterLongLat ();
@@ -72,17 +75,19 @@ public class PlayerLocation : MonoBehaviour {
 		string readableString = "";
 		string singleReadableString = "";
 		int x = 1;
-		List<BingMapsClasses.Result> newResultsList = BingMapsClasses.requestPoiFromBingMaps (latitude, longitude, 5.0, 5);
+		List<BingMapsClasses.Result> newResultsList = BingMapsClasses.requestPoiFromBingMaps (latitude, longitude, 5.0, 3); //limitation due to Bing Search API : Allows only 3 calls per second
 		foreach (BingMapsClasses.Result result in newResultsList) {
 			double resultLong = result.Longitude;
 			double resultLat = result.Latitude;
+			string displayName = result.DisplayName;
+			string additionalInfoUrl = bsHandler.getLinkResult(displayName);
 			Vector3 unityPos = getUnityPos (resultLat, resultLong);
 			double distanceFromPlayerM = DistanceCalculator.getDistanceBetweenPlaces (longitude, latitude, resultLong, resultLat) * 1000;
 			float relativeAngle = getRelativeDirection (unityPos);
 			string relativeDirectionString = DistanceCalculator.getRelativeDirectionString (relativeAngle);
-			infoPanelString = (infoPanelString + x + ". " + result.DisplayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId(result.EntityTypeID) + "\n\n");
-			readableString = (readableString + x + ". " + result.DisplayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId(result.EntityTypeID) + " , " + relativeDirectionString + "\n\n");
-			singleReadableString = x + ". " + result.DisplayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId (result.EntityTypeID) + " , " + relativeDirectionString;
+			infoPanelString = (infoPanelString + x + ". " + displayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId(result.EntityTypeID) + " " + additionalInfoUrl + "\n\n");
+			readableString = (readableString + x + ". " + displayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId(result.EntityTypeID) + " , " + relativeDirectionString + "\n\n");
+			singleReadableString = x + ". " + displayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId (result.EntityTypeID) + " , " + relativeDirectionString;
 			Debug.Log ("Distance: " + distanceFromPlayerM + " Direction: " + relativeAngle + " which is " + relativeDirectionString);
 			StartCoroutine (ttsHandler.GetTextToSpeech (singleReadableString, (x-1)));
 			ttsHandler.addAudioDir (unityPos);
@@ -121,8 +126,8 @@ public class PlayerLocation : MonoBehaviour {
 				double distanceFromPlayerM = DistanceCalculator.getDistanceBetweenPlaces (longitude, latitude, resultLong, resultLat) * 1000;
 
 				string relativeDirectionString = DistanceCalculator.getRelativeDirectionString (relativeAngle);
-				infoPanelString = (infoPanelString + x + ". " + result.DisplayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId (result.EntityTypeID) + "\n\n");
-				readableString = (readableString + x + ". " + result.DisplayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId (result.EntityTypeID) + " , " + relativeDirectionString + "\n\n");
+				infoPanelString = (infoPanelString + x + ",, " + result.DisplayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId (result.EntityTypeID) + "\n\n");
+				readableString = (readableString + x + ",, " + result.DisplayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId (result.EntityTypeID) + " , " + relativeDirectionString + "\n\n");
 				Debug.Log ("Distance: " + distanceFromPlayerM + " Direction: " + relativeAngle + " which is " + relativeDirectionString);
 				x++;
 				featureCount++;
