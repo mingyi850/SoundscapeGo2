@@ -80,7 +80,8 @@ public class PlayerLocation : MonoBehaviour {
 			double resultLong = result.Longitude;
 			double resultLat = result.Latitude;
 			string displayName = result.DisplayName;
-			string additionalInfoUrl = bsHandler.getLinkResult(displayName);
+			string rawUrl = bsHandler.getLinkResult (displayName);
+			string additionalInfoUrl = string.Format("<link=\"{0}\"><color=blue>{1}</color></link>",rawUrl, rawUrl);
 			Vector3 unityPos = getUnityPos (resultLat, resultLong);
 			double distanceFromPlayerM = DistanceCalculator.getDistanceBetweenPlaces (longitude, latitude, resultLong, resultLat) * 1000;
 			float relativeAngle = getRelativeDirection (unityPos);

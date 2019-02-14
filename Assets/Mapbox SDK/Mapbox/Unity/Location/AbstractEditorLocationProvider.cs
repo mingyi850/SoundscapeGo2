@@ -19,13 +19,13 @@
 
 		WaitForSeconds _wait = new WaitForSeconds(0);
 
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
 		protected virtual void Awake()
 		{
 			_wait = new WaitForSeconds(_updateInterval);
 			StartCoroutine(QueryLocation());
 		}
-#endif
+//#endif
 
 		IEnumerator QueryLocation()
 		{
