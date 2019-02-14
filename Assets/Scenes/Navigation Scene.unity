@@ -1068,10 +1068,10 @@ RectTransform:
   m_Father: {fileID: 151488265}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 80, y: -100}
-  m_SizeDelta: {x: 130, y: 130}
+  m_AnchorMin: {x: 0.822229, y: 0.17}
+  m_AnchorMax: {x: 0.9825327, y: 0.845}
+  m_AnchoredPosition: {x: -641.2, y: -1.5}
+  m_SizeDelta: {x: -8.299988, y: -5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &428682747
 MonoBehaviour:
@@ -1144,8 +1144,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -581953629
+  m_SortingLayer: -1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 80620594235d15d4eadb0fc93d308204, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1199,7 +1199,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1595682813}
-        m_MethodName: SideMenuSlideOut
+        m_MethodName: menuButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2260,7 +2260,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -80, y: -100}
+  m_AnchoredPosition: {x: -78, y: -100}
   m_SizeDelta: {x: 130, y: 130}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1058970921
@@ -3216,6 +3216,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sideMenu: {fileID: 1874502047}
+  sideMenuButton: {fileID: 428682746}
+  homeButton: {fileID: 1058970924}
 --- !u!4 &1595682814
 Transform:
   m_ObjectHideFlags: 0
@@ -4869,8 +4871,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -600, y: 0}
-  m_SizeDelta: {x: -400, y: 0}
+  m_AnchoredPosition: {x: -799.975, y: 0}
+  m_SizeDelta: {x: 0.050048828, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1874502048
 MonoBehaviour:

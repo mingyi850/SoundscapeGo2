@@ -38,6 +38,12 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Buttons
+    uniqueID: 3713013667
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Panels
+    uniqueID: 663942735
     locked: 0
