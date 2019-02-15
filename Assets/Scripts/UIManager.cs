@@ -26,7 +26,7 @@ public class UIManager : MonoBehaviour
 
 	public void SideMenuSlideOut() {
 		sideMenu.DOAnchorPos(new Vector2(0, 0), 0.25f);
-		sideMenuButton.DOAnchorPos(new Vector2(0, 0), 0.25f);
+		sideMenuButton.DOAnchorPos(new Vector2(0, 585), 0.25f);
 		homeButtonObject.transform.SetParent(sidePanel);
 		homeButton.gameObject.SetActive(false);
 		menuState = 1;
