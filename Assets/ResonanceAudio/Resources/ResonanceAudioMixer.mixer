@@ -15,7 +15,9 @@ AudioMixerController:
   m_SuspendThreshold: -80
   m_EnableSuspend: 1
   m_UpdateMode: 0
-  m_ExposedParameters: []
+  m_ExposedParameters:
+  - guid: 76dd6ada92654467da2044ca5eb97484
+    name: SpatialVolume
   m_AudioMixerGroupViews:
   - guids:
     - c799ec8bc7f394c3faaa686b0c2f3f40
