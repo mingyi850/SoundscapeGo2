@@ -12,29 +12,52 @@ using TMPro;
 using BingSearch;
 using BingMapsEntities;
 using TTS;
+using System.Text.RegularExpressions;
+
 
 public class PlayerLocation : MonoBehaviour {
-	
+
+	enum DirFilter 
+	{
+		AROUND,
+		AHEAD
+	};
+		
 	private AbstractMap abstractMap; 
 	private Vector2d mapCenter;
-	public TextMeshProUGUI infoTextMesh;
 	public TextMeshProUGUI infoHeaderTextMesh;
 	private List<BingMapsClasses.Result> resultsList;
 	private TextToSpeechHandler ttsHandler;
 	private ILocationProvider locationProvider;
 	private BingSearchHandler bsHandler;
-
+	public GameObject infoPanel;
+	Dictionary<int, Transform> infoPanelMap;
+	private Regex poiRegex;
 	// Use this for initialization
 	IEnumerator Start () {
 		locationProvider = GameObject.Find ("LocationProviderFactoryObject").GetComponent<LocationProviderFactory> ().TransformLocationProvider;
-		Debug.Log (locationProvider);
 		abstractMap = GameObject.Find("Map").GetComponent<AbstractMap>();
 		ttsHandler = GameObject.Find ("TextToSpeechHandler").GetComponent<TextToSpeechHandler> ();
 		bsHandler = GameObject.Find ("BingSearchHandler").GetComponent<BingSearchHandler> ();
 		yield return new WaitUntil(() => abstractMap.isReady == true);
 
 		mapCenter = abstractMap.getCenterLongLat ();
-		Debug.Log (mapCenter.ToString ());
+		poiRegex = new Regex ("POI Panel [1-3]");
+		//initialise infopanel dictionary
+		infoPanelMap = new Dictionary<int, Transform>();
+		for (int x = 0; x < infoPanel.transform.childCount; x++) {
+			Transform thing = infoPanel.transform.GetChild (x);
+			Debug.Log (thing.name);
+			Debug.Log(poiRegex.Match(thing.name).Value);
+				if (poiRegex.Match(thing.name).Length != 0) {
+				Debug.Log ("Adding Key: " + thing.name [thing.name.Length - 1]);
+				infoPanelMap.Add (int.Parse((thing.name [thing.name.Length - 1]).ToString()), thing);
+			}
+		}
+		Debug.Log ("Dict Size: " + infoPanelMap.Keys.Count);
+		foreach (int key in infoPanelMap.Keys) {
+			Debug.Log ("Key : " + key);
+		}
 
 	}
 	
@@ -63,42 +86,67 @@ public class PlayerLocation : MonoBehaviour {
 		return VectorExtensions.AsUnityPosition (latlon, abstractMap.CenterMercator, (abstractMap.WorldRelativeScale)); //* 1.5f
 	}
 
-	public void getNearbyFeatures() {
+	public void getNearbyFeatures(int directionCode) {
 
 		Vector2d currentLocation = getLongLat ();
 		double latitude = currentLocation.x;
 		double longitude = currentLocation.y;
 
-
-		infoTextMesh.transform.parent.gameObject.SetActive (true);
 		string infoPanelString = "";
 		string readableString = "";
 		string singleReadableString = "";
 		int x = 1;
-		List<BingMapsClasses.Result> newResultsList = BingMapsClasses.requestPoiFromBingMaps (latitude, longitude, 5.0, 3); //limitation due to Bing Search API : Allows only 3 calls per second
+		int totalFeatureCount = 3;
+		int featureCount = 0;
+		List<BingMapsClasses.Result> newResultsList = BingMapsClasses.requestPoiFromBingMaps (latitude, longitude, 5.0, 10); //limitation due to Bing Search API : Allows only 3 calls per second
 		foreach (BingMapsClasses.Result result in newResultsList) {
+			//Gather Data about point
+			// 1. Gather positional data
 			double resultLong = result.Longitude;
 			double resultLat = result.Latitude;
-			string displayName = result.DisplayName;
-			string rawUrl = bsHandler.getLinkResult (displayName);
-			string additionalInfoUrl = string.Format("<link=\"{0}\"><color=blue>{1}</color></link>",rawUrl, rawUrl);
 			Vector3 unityPos = getUnityPos (resultLat, resultLong);
 			double distanceFromPlayerM = DistanceCalculator.getDistanceBetweenPlaces (longitude, latitude, resultLong, resultLat) * 1000;
 			float relativeAngle = getRelativeDirection (unityPos);
 			string relativeDirectionString = DistanceCalculator.getRelativeDirectionString (relativeAngle);
-			infoPanelString = (infoPanelString + x + ". " + displayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId(result.EntityTypeID) + " " + additionalInfoUrl + "\n\n");
-			readableString = (readableString + x + ". " + displayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId(result.EntityTypeID) + " , " + relativeDirectionString + "\n\n");
+
+			//sets up filter for get ahead based on direction
+			if (directionCode == (int)DirFilter.AHEAD) {
+				Debug.Log ("Getting Ahead of Me");
+				if (!(relativeAngle > -60.0f && relativeAngle < 60.0f)) {
+					continue;
+				}
+			}
+			// 2. Gather Display characteristics
+			string displayName = result.DisplayName;;
+			string rawUrl = bsHandler.getLinkResult (displayName);
+			string additionalInfoUrl = string.Format ("<link=\"{0}\"><color=yellow>{1}</color></link>", rawUrl, rawUrl);
+
+
+			//Construct Strings after validation
+			infoPanelString = (x + ". " + displayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId (result.EntityTypeID) + " " + additionalInfoUrl);
 			singleReadableString = x + ". " + displayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId (result.EntityTypeID) + " , " + relativeDirectionString;
-			Debug.Log ("Distance: " + distanceFromPlayerM + " Direction: " + relativeAngle + " which is " + relativeDirectionString);
-			StartCoroutine (ttsHandler.GetTextToSpeech (singleReadableString, (x-1)));
+			//Get Relavant panel and text box:
+			Debug.Log("Finding Key: " + x);
+			Transform relavantPoiPanel = infoPanelMap [x];
+			TextMeshProUGUI relavantTextMesh = relavantPoiPanel.Find ("POI Info").GetComponent<TextMeshProUGUI> ();
+			relavantTextMesh.text = infoPanelString;
+
+			StartCoroutine (ttsHandler.GetTextToSpeech (singleReadableString, (featureCount)));
 			ttsHandler.addAudioDir (unityPos);
 			x++;
+			featureCount++;
+			if (featureCount == totalFeatureCount) {
+				break;
+			}
 		}
 
-		infoTextMesh.text = infoPanelString;
+
+
+		infoHeaderTextMesh.text = "Around Me";
+		infoPanel.SetActive (true);
 		Debug.Log ("THIS PLAYER IS AT: " + getUnityPos (currentLocation.x, currentLocation.y).ToString());
 		ttsHandler.StartCoroutine (ttsHandler.playDirAudioQueue ());
-		Debug.Log (infoPanelString);
+
 
 
 
@@ -106,13 +154,13 @@ public class PlayerLocation : MonoBehaviour {
 	}
 
 	public void getAheadOfMe() {
-		int totalFeatureCount = 5;
+		int totalFeatureCount = 3;
 		Vector2d currentLocation = getLongLat ();
 		double latitude = currentLocation.x;
 		double longitude = currentLocation.y;
 
 
-		infoTextMesh.transform.parent.gameObject.SetActive (true);
+		//infoTextMesh.transform.parent.gameObject.SetActive (true);
 		string infoPanelString = "";
 		string readableString = "";
 		int x = 1;
@@ -138,7 +186,7 @@ public class PlayerLocation : MonoBehaviour {
 			}
 		}
 		infoHeaderTextMesh.text = "Ahead of Me";
-		infoTextMesh.text = infoPanelString;
+		//infoTextMesh.text = infoPanelString;
 		StartCoroutine (ttsHandler.GetTextToSpeech (readableString, 0));
 		Debug.Log (infoPanelString);
 
