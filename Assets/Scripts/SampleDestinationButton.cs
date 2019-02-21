@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using Mapbox.Utils;
 using Scripts.DistanceCalc;
 
-public class SampleButton : MonoBehaviour
+public class SampleDestinationButton : MonoBehaviour
 {
     public Button button;
     public Text nameLabel;
@@ -15,12 +15,6 @@ public class SampleButton : MonoBehaviour
 
     private Destination destination;
     private ScrollList scrollList;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     double RoundMeters(double num)
     {

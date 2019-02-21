@@ -79,7 +79,7 @@ public class ScrollList : MonoBehaviour
             Destination destination = filteredDestinationList[i];
             GameObject newButton = buttonObjectPool.GetObject();
             newButton.transform.SetParent(contentPanel);
-            SampleButton sampleButton = newButton.GetComponent<SampleButton>();
+            SampleDestinationButton sampleButton = newButton.GetComponent<SampleDestinationButton>();
             sampleButton.Setup(destination, this);
         }
     }
