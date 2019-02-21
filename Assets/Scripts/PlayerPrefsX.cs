@@ -1,3 +1,5 @@
+// Author: Eric Heines
+// Script borrowed from Unifycommunity wiki page at: http://wiki.unity3d.com/index.php/ArrayPrefs2#C.23_-_PlayerPrefsX.cs
 // ArrayPrefs2 v 1.4
  
 using UnityEngine;
