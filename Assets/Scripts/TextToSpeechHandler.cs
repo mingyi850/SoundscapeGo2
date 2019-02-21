@@ -17,90 +17,30 @@ namespace TTS
 {
 	public class TextToSpeechHandler: MonoBehaviour
 	{
-		public static readonly string FetchTokenUri = "https://westeurope.api.cognitive.microsoft.com/sts/v1.0/issuetoken";
-		private string subscriptionKey = "2f9e610344d9487fa3c18575739cb9bf";
-		private string currentToken;
-		private Timer accessTokenRenewer;
 		private AudioSource voiceSource;
-		private Queue<AudioClip> audioQueue;
 		private Queue<Vector3> audioDirQueue;
-		public AudioSource testCube;
+		private Queue<LocalisedAudioClip> dirAudioQueue;
 		string ttsHost = "https://westeurope.tts.speech.microsoft.com/cognitiveservices/v1";
 
 
-		//Access token expires every 10 minutes. Renew it every 9 minutes.
-		private const int RefreshTokenDuration = 9;
-
 		void Awake()
 		{
-			audioQueue = new Queue<AudioClip> ();
+			
 			audioDirQueue = new Queue<Vector3> ();
+			dirAudioQueue = new Queue<LocalisedAudioClip>();
 			voiceSource = gameObject.GetComponent<AudioSource> ();
-			Debug.Log ("Fetching Token from TTS server");
-			StartCoroutine(FetchToken(FetchTokenUri, subscriptionKey));
-
-			// renew the token on set duration.
-			accessTokenRenewer = new Timer(new TimerCallback(OnTokenExpiredCallback),
-				this,
-				TimeSpan.FromMinutes(RefreshTokenDuration),
-				TimeSpan.FromMilliseconds(-1));
 		}
 
 		public string GetAccessToken()
 		{
-			return currentToken;
+			return AzureSpeechToken.AzureSpeechServicesToken.Instance.GetAccessToken ();
 		}
 
-		private void RenewAccessToken()
-		{
-			StartCoroutine(FetchToken(FetchTokenUri, this.subscriptionKey));
-			Debug.Log("Renewed token.");
-		}
+	
 
-		private void OnTokenExpiredCallback(object stateInfo)
-		{
-			try
-			{
-				RenewAccessToken();
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine(String.Format("Failed renewing access token. Details: {0}", ex.Message));
-			}
-			finally
-			{
-				try
-				{
-					accessTokenRenewer.Change(TimeSpan.FromMinutes(RefreshTokenDuration), TimeSpan.FromMilliseconds(-1));
-				}
-				catch (Exception ex)
-				{
-					Console.WriteLine(String.Format("Failed to reschedule the timer to renew access token. Details: {0}", ex.Message));
-				}
-			}
-		}
-
-		IEnumerator FetchToken(String fetchUri, String subscriptionKey)
-		{
-			WWWForm form = new WWWForm ();
-			UnityWebRequest request = UnityWebRequest.Post (fetchUri, form);
-			request.SetRequestHeader ("Ocp-Apim-Subscription-Key", subscriptionKey);
-			//request.SetRequestHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
-
-			yield return request.SendWebRequest ();
-			if (request.isNetworkError || request.isHttpError) {
-				Debug.Log (request.error);
-			} 
-			else {
-				Debug.Log (request.ToString ());
-				currentToken = request.downloadHandler.text;
-				Debug.Log ("Token: " + currentToken);
-			}
-
-
-		}
 		IEnumerator getTextToSpeechTest() {
-			string accessToken = currentToken;
+			string accessToken = GetAccessToken();
+			Debug.Log ("Access Token: " + accessToken);
 			WWWForm form = new WWWForm ();
 			string text = "Hi, my name is joe";
 			string body = @"<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='en-GB'>
@@ -123,7 +63,7 @@ namespace TTS
 				//uploader.data = new StringContent(body, Encoding.UTF8, "application/ssml+xml");
 
 				// Set additional header, such as Authorization and User-Agent
-				request.SetRequestHeader("Authorization", "Bearer " + currentToken);
+				request.SetRequestHeader("Authorization", "Bearer " + accessToken);
 				// Update your resource name
 				request.SetRequestHeader("User-Agent", "Text2Speech2");
 				request.SetRequestHeader("X-Microsoft-OutputFormat", "audio-16khz-128kbitrate-mono-mp3");
@@ -154,8 +94,9 @@ namespace TTS
 			}
 				
 		}
-		public IEnumerator GetTextToSpeech(string text, int order) {
-			string accessToken = currentToken;
+		public IEnumerator GetTextToSpeech(string text, int order, Vector3 location) {
+			string accessToken = GetAccessToken();
+			Debug.Log ("Access Token: " + accessToken);
 			WWWForm form = new WWWForm ();
 			string body = @"<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='en-GB'>
               <voice name='Microsoft Server Speech Text to Speech Voice (en-GB, HazelRUS)'>" +
@@ -176,7 +117,7 @@ namespace TTS
 				//uploader.data = new StringContent(body, Encoding.UTF8, "application/ssml+xml");
 
 				// Set additional header, such as Authorization and User-Agent
-				request.SetRequestHeader("Authorization", "Bearer " + currentToken);
+				request.SetRequestHeader("Authorization", "Bearer " + accessToken);
 				// Update your resource name
 				request.SetRequestHeader("User-Agent", "Text2Speech2");
 				request.SetRequestHeader("X-Microsoft-OutputFormat", "audio-16khz-128kbitrate-mono-mp3");
@@ -195,16 +136,11 @@ namespace TTS
 				else {
 					//Debug.Log (request.ToString ());
 					if (request.isDone) {
-						Debug.Log (request.downloadedBytes);
+						Debug.Log ("File Length: " + request.downloadedBytes);
 						AudioClip audioFile = downloader.audioClip;
-						yield return new WaitWhile (() => audioQueue.Count < order);
-						audioQueue.Enqueue (audioFile);
-						/*voiceSource.clip = audioQueue [0];
-						while (!voiceSource.isPlaying) {
-							audioQueue.Dequeue ();
-							voiceSource.clip = audioFile;
-							voiceSource.Play ();
-						}*/
+						yield return new WaitWhile (() => dirAudioQueue.Count < order);
+						dirAudioQueue.Enqueue (new LocalisedAudioClip (audioFile, location));
+
 					}
 
 				}
@@ -214,43 +150,41 @@ namespace TTS
 
 		}
 		public IEnumerator playDirAudioQueue() {
-			yield return new WaitWhile (() => audioQueue.Count < 5 || audioDirQueue.Count < 5);
-			Debug.Log ("Audio Queue: " + audioQueue.Count);
-			Debug.Log("Audio Dir: " + audioDirQueue.Count);
-			while (audioQueue.Count != 0 && audioDirQueue.Count != 0){
+			yield return new WaitWhile (() => dirAudioQueue.Count < 3);
+			Debug.Log ("dirAudioQueue: " + dirAudioQueue.Count);
+			while (dirAudioQueue.Count != 0){
 				yield return new WaitWhile (() => voiceSource.isPlaying);
-				voiceSource.clip = audioQueue.Dequeue();
-				Vector3 audioLocation = audioDirQueue.Dequeue();
-				audioLocation.y = 5;
-				this.transform.position = audioLocation;
-				Debug.Log ("Current Location: " + transform.position.ToString() + "    " + audioLocation.ToString());
-				voiceSource.Play ();
+				LocalisedAudioClip currentAudio = dirAudioQueue.Dequeue();
+				playSingleDirAudio (currentAudio);
 
 			}
-			audioQueue.Clear ();
-			audioDirQueue.Clear ();
+			dirAudioQueue.Clear ();
+
 			yield return null;
 		}
 
 		public IEnumerator playDirAudioFromQueue() {
-			yield return new WaitWhile (() => (audioQueue.Count < 1 || audioDirQueue.Count < 1));
+			Debug.Log ("Playing Dir Audio Queue");
+			yield return new WaitWhile (() => (dirAudioQueue.Count < 1));
 			yield return new WaitWhile (() => voiceSource.isPlaying);
-			Vector3 audioLocation = audioDirQueue.Dequeue ();
-			voiceSource.clip = audioQueue.Dequeue();
-			this.transform.position = audioLocation;
-			//voiceSource.Play ();
-			if (testCube != null) {
-				testCube.clip = voiceSource.clip;
-				testCube.Play ();
-			}
+			
+			LocalisedAudioClip currentAudio = dirAudioQueue.Dequeue();
+			playSingleDirAudio(currentAudio);
 
 			yield return null;
 		}
-			
-		public void addAudioDir(Vector3 dir) {
-			Debug.Log (dir.ToString ());
-			audioDirQueue.Enqueue (dir);
+
+		public void playSingleDirAudio(LocalisedAudioClip currentAudio) {
+			voiceSource.clip = currentAudio.AudioFile;
+			Vector3 audioLocation = currentAudio.UnityLocation;
+			audioLocation.y = 5;
+			this.transform.position = audioLocation;
+			Debug.Log ("Current Location: " + transform.position.ToString() + "    " + audioLocation.ToString());
+			voiceSource.Play ();
 		}
+			
 
 	}
+
+
 }

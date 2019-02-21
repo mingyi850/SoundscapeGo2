@@ -98,6 +98,7 @@ public class PlayerLocation : MonoBehaviour {
 		int x = 1;
 		int totalFeatureCount = 3;
 		int featureCount = 0;
+		string headerText = "";
 		List<BingMapsClasses.Result> newResultsList = BingMapsClasses.requestPoiFromBingMaps (latitude, longitude, 5.0, 10); //limitation due to Bing Search API : Allows only 3 calls per second
 		foreach (BingMapsClasses.Result result in newResultsList) {
 			//Gather Data about point
@@ -108,7 +109,6 @@ public class PlayerLocation : MonoBehaviour {
 			double distanceFromPlayerM = DistanceCalculator.getDistanceBetweenPlaces (longitude, latitude, resultLong, resultLat) * 1000;
 			float relativeAngle = getRelativeDirection (unityPos);
 			string relativeDirectionString = DistanceCalculator.getRelativeDirectionString (relativeAngle);
-
 			//sets up filter for get ahead based on direction
 			if (directionCode == (int)DirFilter.AHEAD) {
 				Debug.Log ("Getting Ahead of Me");
@@ -131,8 +131,7 @@ public class PlayerLocation : MonoBehaviour {
 			TextMeshProUGUI relavantTextMesh = relavantPoiPanel.Find ("POI Info").GetComponent<TextMeshProUGUI> ();
 			relavantTextMesh.text = infoPanelString;
 
-			StartCoroutine (ttsHandler.GetTextToSpeech (singleReadableString, (featureCount)));
-			ttsHandler.addAudioDir (unityPos);
+			StartCoroutine (ttsHandler.GetTextToSpeech (singleReadableString, featureCount, unityPos));
 			x++;
 			featureCount++;
 			if (featureCount == totalFeatureCount) {
@@ -140,9 +139,7 @@ public class PlayerLocation : MonoBehaviour {
 			}
 		}
 
-
-
-		infoHeaderTextMesh.text = "Around Me";
+		infoHeaderTextMesh.text = getHeaderText(directionCode);
 		infoPanel.SetActive (true);
 		Debug.Log ("THIS PLAYER IS AT: " + getUnityPos (currentLocation.x, currentLocation.y).ToString());
 		ttsHandler.StartCoroutine (ttsHandler.playDirAudioQueue ());
@@ -153,98 +150,18 @@ public class PlayerLocation : MonoBehaviour {
 
 	}
 
-	public void getAheadOfMe() {
-		int totalFeatureCount = 3;
-		Vector2d currentLocation = getLongLat ();
-		double latitude = currentLocation.x;
-		double longitude = currentLocation.y;
-
-
-		//infoTextMesh.transform.parent.gameObject.SetActive (true);
-		string infoPanelString = "";
-		string readableString = "";
-		int x = 1;
-		int featureCount = 0;
-		List<BingMapsClasses.Result> newResultsList = BingMapsClasses.requestPoiFromBingMaps (latitude, longitude, 5.0, 20);
-		foreach (BingMapsClasses.Result result in newResultsList) {
-			double resultLong = result.Longitude;
-			double resultLat = result.Latitude;
-			Vector3 unityPos = getUnityPos (resultLat, resultLong);
-			float relativeAngle = getRelativeDirection (unityPos);
-			if (relativeAngle > -60.0f && relativeAngle < 60.0f) {
-				double distanceFromPlayerM = DistanceCalculator.getDistanceBetweenPlaces (longitude, latitude, resultLong, resultLat) * 1000;
-
-				string relativeDirectionString = DistanceCalculator.getRelativeDirectionString (relativeAngle);
-				infoPanelString = (infoPanelString + x + ",, " + result.DisplayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId (result.EntityTypeID) + "\n\n");
-				readableString = (readableString + x + ",, " + result.DisplayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId (result.EntityTypeID) + " , " + relativeDirectionString + "\n\n");
-				Debug.Log ("Distance: " + distanceFromPlayerM + " Direction: " + relativeAngle + " which is " + relativeDirectionString);
-				x++;
-				featureCount++;
-			}
-			if (featureCount == totalFeatureCount) {
-				break;
-			}
+	string getHeaderText(int directionCode) {
+		string headerText = "";
+		switch (directionCode) {
+		case ((int)DirFilter.AHEAD):
+			headerText = "Ahead of Me";
+			break;
+		case((int)DirFilter.AROUND):
+			headerText = "Around Me";
+			break;
 		}
-		infoHeaderTextMesh.text = "Ahead of Me";
-		//infoTextMesh.text = infoPanelString;
-		StartCoroutine (ttsHandler.GetTextToSpeech (readableString, 0));
-		Debug.Log (infoPanelString);
-
-
-
-
+		return headerText;
 	}
-
-	 /*IEnumerator requestPoiFromBingMaps(double latitude, double longitude, double distance) {
-		string bingMapsApiKey = "Aul2Lj8luxSAtsuBPTb0qlqhXc6kwdTZvQGvGkOc_h_Jg3HI_2F-V6BeeHwHZZ4E";
-		string dataAccessId = "c2ae584bbccc4916a0acf75d1e6947b4";
-		string dataSourceName = "NavteqEU";
-		string entityTypeName = "NavteqPOIs";
-		string[] returnParams = { "DisplayName", "Name", "AddressLine", "EntityTypeID", "Latitude", "Longitude" };
-		int poiCount = 3;
-		string dataFormat = "json";
-
-		
-		string queryURL = generateQueryUrlNearby(dataAccessId, dataSourceName, entityTypeName, latitude, longitude, distance, returnParams, poiCount, dataFormat, bingMapsApiKey);
-		WWW request = new WWW (queryURL);
-		float startTime = Time.time;
-		while (request.isDone == false) {
-			if (Time.time - startTime > 10) {
-				Debug.Log ("API TIMEOUT");
-				break;
-			}
-			Debug.Log ("Waiting : " + (Time.time - startTime) + " seconds elapsed");
-		}
-		if (request.isDone) {
-			string jsonData = System.Text.Encoding.UTF8.GetString (request.bytes, 0, request.bytes.Length);
-
-			BingMapsClasses.RootObject rootObject = BingMapsClasses.getRootObject (jsonData);
-
-			resultsList = rootObject.d.results;
-			yield return null;
-		}
-		resultsList = new List<BingMapsClasses.Result> ();
-
-
-
-
-	}
-
-	private string generateQueryUrlNearby(string dataAccessId, string dataSourceName, string entityTypeName, double latitude, double longitude, double distance, string[] returnParams, int poiCount, string format, string apiKey) {
-		string staticEndpoint = "http://spatial.virtualearth.net/REST/v1/data";
-		string returnParamsString = "";
-		foreach (string param in returnParams) {
-			returnParamsString = returnParamsString + param + ",";
-		}
-		Debug.Log (returnParamsString);
-		returnParamsString = returnParamsString.Remove(returnParamsString.Length - 1);
-		Debug.Log (returnParamsString);
-		string queryURL = (string.Format("{0}/{1}/{2}/{3}?spatialFilter=nearby({4},{5},{6})&$select={7}&$top={8}&$format={9}&key={10}",staticEndpoint, dataAccessId, dataSourceName, entityTypeName, latitude, longitude, distance, returnParamsString, poiCount, format, apiKey));
-		Debug.Log (queryURL);
-		return queryURL;
-	}
-	*/
-
 
 	void updateInfoPanel(Text textBox, string content) {
 		textBox.text = content;
