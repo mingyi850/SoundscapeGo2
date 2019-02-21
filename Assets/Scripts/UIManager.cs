@@ -9,7 +9,7 @@ public class UIManager : MonoBehaviour
 {
 	public RectTransform sideMenu, sideMenuButton, markersPanel;
 	public Button homeButton;
-	public GameObject menuButtonObject;
+	public GameObject menuButtonObject, infoPanel;
 	public Transform sidePanel, topPanel, markersPanelTransform;
 	private int menuState = 0;
 
@@ -28,6 +28,7 @@ public class UIManager : MonoBehaviour
 
 	public void SideMenuSlideOut() {
 		menuState = 1;
+		infoPanel.SetActive(false);
 		sideMenu.DOAnchorPos(new Vector2(0, 0), 0.25f);
 		markersPanel.DOAnchorPos(new Vector2(-800, 0), 0.25f);
 		sideMenuButton.DOAnchorPos(new Vector2(0, 585), 0.25f);

@@ -125,7 +125,7 @@ public class PlayerLocation : MonoBehaviour {
 			//Construct Strings after validation
 			infoPanelString = (x + ". " + displayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId (result.EntityTypeID) + " " + additionalInfoUrl);
 			singleReadableString = x + ". " + displayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId (result.EntityTypeID) + " , " + relativeDirectionString;
-			//Get Relavant panel and text box:
+			//Get Relevant panel and text box:
 			Debug.Log("Finding Key: " + x);
 			Transform relavantPoiPanel = infoPanelMap [x];
 			TextMeshProUGUI relavantTextMesh = relavantPoiPanel.Find ("POI Info").GetComponent<TextMeshProUGUI> ();
