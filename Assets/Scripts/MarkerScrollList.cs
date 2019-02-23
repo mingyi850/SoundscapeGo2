@@ -28,4 +28,33 @@ public class MarkerScrollList : MonoBehaviour
     {
         
     }
+
+    public void RefreshDisplay() 
+    {
+        RemoveButtons();
+        AddButtons();
+    }
+
+    private void RemoveButtons()
+    {
+        while (contentPanel.childCount > 0) 
+        {
+            GameObject toRemove = transform.GetChild(0).gameObject;
+            buttonObjectPool.ReturnObject(toRemove);
+        }
+    }
+
+    private void AddButtons()
+    {
+        for (int i = 0; i < markerLists.Count; i++) 
+        {
+            ListOfMarkers newList = markerLists[i];
+            GameObject newButton = buttonObjectPool.GetObject();
+            newButton.transform.SetParent(contentPanel);
+
+            SampleListButton sampleButton = newButton.GetComponent<SampleListButton>();
+            sampleButton.Setup(newList, this);
+        }
+    }
+
 }

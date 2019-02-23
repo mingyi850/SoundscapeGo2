@@ -8,6 +8,7 @@ public class SampleListButton : MonoBehaviour
     public Button button;
     public Text nameLabel;
     private MarkerScrollList scrollList;
+    private ListOfMarkers currentList;
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +24,8 @@ public class SampleListButton : MonoBehaviour
 
     public void Setup(ListOfMarkers newList, MarkerScrollList currentScrollList)
     {
-        nameLabel.text = newList.listName;
+        currentList = newList;
+        nameLabel.text = currentList.listName;
         scrollList = currentScrollList;
     }
 }
