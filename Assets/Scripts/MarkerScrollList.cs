@@ -22,11 +22,12 @@ public class MarkerScrollList : MonoBehaviour
     public List<ListOfMarkers> markerLists;
     public Transform contentPanel;
     public SimpleObjectPool buttonObjectPool;
+    public GameObject UIManager;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        RefreshDisplay();
     }
 
     public void RefreshDisplay() 
@@ -53,7 +54,7 @@ public class MarkerScrollList : MonoBehaviour
             newButton.transform.SetParent(contentPanel);
 
             SampleListButton sampleButton = newButton.GetComponent<SampleListButton>();
-            sampleButton.Setup(newList, this);
+            sampleButton.Setup(newList, this, UIManager);
         }
     }
 
