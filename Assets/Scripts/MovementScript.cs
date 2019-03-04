@@ -45,6 +45,7 @@ public class MovementScript : MonoBehaviour
 		// Determine amount to move based on current forward direction and speed
 		Vector3 movement = transform.forward * movementInput * speed * Time.deltaTime * turbo;
 
+
 		// Move our Rigidbody to this position
 		controller.Move(movement);
 

@@ -13,6 +13,7 @@ public class SwipeMovementScript : MonoBehaviour
 	public float rotationSpeed;
 	public float movementSpeed;
 	private float yRotation;
+
 	void Start() {
 		playerTransform = gameObject.transform;
 		playerControl = gameObject.GetComponent<CharacterController> ();

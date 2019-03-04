@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using UnityEditor.Audio;
 using System.Collections.Generic;
 using UnityEngine.Audio;
 using UnityEngine;
@@ -24,6 +23,8 @@ public class AudioConverterWav : MonoBehaviour{
 	private AudioClip newRecording;
 	private FileStream fileStream;
 	private SpeechToTextHandler sttHandler;
+	private FileStream fakeFile;
+	private string fakeFileName = "fakeTest.wav";
 
 	void Awake()
 	{
@@ -58,7 +59,7 @@ public class AudioConverterWav : MonoBehaviour{
 				StartWriting (fileName);
 				ConvertAndWrite (truncatedData);
 				WriteHeader (); 
-				StartCoroutine(sttHandler.GetSpeechToText(fileName));
+				StartCoroutine(sttHandler.GetSpeechToText(getFileStreamBytes()));
 				recOutput = false;
 				Debug.Log ("End of conversion");
 			}
@@ -165,13 +166,23 @@ public class AudioConverterWav : MonoBehaviour{
 
 
 	public byte[] getFileStreamBytes() {
-		int streamLength = (int)fileStream.Length;
-		Debug.Log (streamLength);
-		byte[] returnedBytes = new byte[streamLength];
-		fileStream.Read (returnedBytes, 0, streamLength);
-		fileStream.Close ();
-		Debug.Log (returnedBytes);
-		return returnedBytes;
+		//int streamLength = (int)fileStream.Length;
+		//Debug.Log ("Stream length::" + streamLength);
+		//byte[] returnedBytes = new byte[streamLength];
+		//fileStream.Read (returnedBytes, 0, streamLength);
+		//fileStream.Close ();
+		byte[] altReturnedBytes = File.ReadAllBytes (fileName);
+
+		//Debug.Log ("Length of returned bytes:" + returnedBytes.Length);
+		Debug.Log ("Length of alt returned bytes:" + altReturnedBytes.Length);
+
+
+
+		fakeFile = new FileStream (fakeFileName, FileMode.Create);
+		fakeFile.Write (altReturnedBytes, 0, altReturnedBytes.Length);
+		fakeFile.Close ();
+
+		return altReturnedBytes;
 	}
 			
 }

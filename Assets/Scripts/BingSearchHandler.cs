@@ -114,7 +114,7 @@ namespace BingSearch
 
 		void Awake()
 		{
-
+			
 		}
 
 		public string getLinkResult(string query) 
