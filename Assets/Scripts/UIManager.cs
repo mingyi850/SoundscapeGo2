@@ -9,9 +9,9 @@ public class UIManager : MonoBehaviour
 {
 	public RectTransform sideMenu, sideMenuButton, markersPanel;
 	public Button homeButton;
-	public GameObject menuButtonObject, infoPanel;
+	public GameObject menuButtonObject, infoPanel, showListPanel;
 	public Transform sidePanel, topPanel, markersPanelTransform;
-	private int menuState = 0;
+	private int menuState = 0, markersMenuState = 0;
 
 	public void ChangeToHomeScene() {
 		SceneManager.LoadScene ("Destination Select");
@@ -64,5 +64,22 @@ public class UIManager : MonoBehaviour
 		menuButtonObject.transform.SetParent(topPanel);
 		homeButton.gameObject.SetActive(true);
 		menuState = 0;
+	}
+
+	public void CloseButtonClicked() {
+		if (markersMenuState == 0)
+			HideMarkersPanel();
+		if (markersMenuState == 1)
+			HideShowListPanel();
+	}
+
+	public void ListButtonClicked() {
+		showListPanel.gameObject.SetActive(true);
+		markersMenuState = 1;
+	}
+
+	public void HideShowListPanel() {
+		showListPanel.gameObject.SetActive(false);
+		markersMenuState = 0;
 	}
 }

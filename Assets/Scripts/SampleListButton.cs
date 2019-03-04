@@ -7,13 +7,15 @@ public class SampleListButton : MonoBehaviour
 {
     public Button button;
     public Text nameLabel;
+
     private MarkerScrollList scrollList;
-    private ListOfMarkers currentList;
+    private ListOfMarkers list;
+    private GameObject UIManagerObject;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        button.onClick.AddListener (HandleClick);
     }
 
     // Update is called once per frame
@@ -22,10 +24,17 @@ public class SampleListButton : MonoBehaviour
         
     }
 
-    public void Setup(ListOfMarkers newList, MarkerScrollList currentScrollList)
+    public void Setup(ListOfMarkers newList, MarkerScrollList currentScrollList, GameObject UIManager)
     {
-        currentList = newList;
-        nameLabel.text = currentList.listName;
+        list = newList;
+        nameLabel.text = list.listName;
         scrollList = currentScrollList;
+        UIManagerObject = UIManager;
     }
+
+    public void HandleClick()
+    {
+        UIManagerObject.GetComponent<UIManager>().ListButtonClicked();
+    }
+
 }
