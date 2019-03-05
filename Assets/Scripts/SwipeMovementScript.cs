@@ -13,6 +13,7 @@ public class SwipeMovementScript : MonoBehaviour
 	public float rotationSpeed;
 	public float movementSpeed;
 	private float yRotation;
+	private Animator animator;
 
 	void Start() {
 		playerTransform = gameObject.transform;
@@ -20,6 +21,7 @@ public class SwipeMovementScript : MonoBehaviour
 		playerBody = gameObject.GetComponent<Rigidbody> ();
 		originalRotation = playerTransform.eulerAngles;
 		yRotation = originalRotation.y;
+		animator = GetComponent<Animator>();
 
 	}
 
@@ -49,8 +51,10 @@ public class SwipeMovementScript : MonoBehaviour
 				} 
 				else if (Mathf.Abs (touchDirectionAngle) < 110 && Mathf.Abs (touchDirectionAngle) > 70) {
 					Debug.Log ("Delta Y: " + deltaY);
-					Vector3 movement = transform.forward * deltaY * movementSpeed * Time.deltaTime;
+					float moveSpeed = deltaY * movementSpeed * Time.deltaTime;
+					Vector3 movement = transform.forward * moveSpeed;
 					playerControl.Move (movement);
+					
 				}
 
 			} 
@@ -59,6 +63,8 @@ public class SwipeMovementScript : MonoBehaviour
 				initTouch = new Touch ();
 			}
 		}
+		Debug.Log("magnitude: " + playerControl.velocity.magnitude);
+		animator.SetFloat("MoveSpeed", playerControl.velocity.magnitude);
 	}
 
 }

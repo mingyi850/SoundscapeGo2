@@ -20,6 +20,7 @@ public class MovementScript : MonoBehaviour
 	private Rigidbody body;
 	private CharacterController controller;
 	private PlayerLocation playerLocation;
+	private Animator animator;
 
 
 
@@ -30,6 +31,7 @@ public class MovementScript : MonoBehaviour
 		controller = GetComponent<CharacterController>();
 		body = GetComponent<Rigidbody>();
 		transform.position = new Vector3 (0.0f, 0.0f, 0.0f);
+		animator = GetComponent<Animator>();
 
 
 
@@ -43,11 +45,13 @@ public class MovementScript : MonoBehaviour
 		float movementInput = GetMovementInput();
 		float turbo = getTurboInput ();
 		// Determine amount to move based on current forward direction and speed
-		Vector3 movement = transform.forward * movementInput * speed * Time.deltaTime * turbo;
+		float totalMovementSpeed = (movementInput * speed * Time.deltaTime * turbo);
+		Vector3 movement = transform.forward * totalMovementSpeed;
 
-
+		//Debug.Log("Total Movement Speed: " + totalMovementSpeed);
 		// Move our Rigidbody to this position
 		controller.Move(movement);
+		animator.SetFloat("MoveSpeed", totalMovementSpeed);
 
 		// Get rotation input value
 		float rotationInput = GetRotationInput();
