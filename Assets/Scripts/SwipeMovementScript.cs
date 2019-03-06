@@ -63,7 +63,7 @@ public class SwipeMovementScript : MonoBehaviour
 				initTouch = new Touch ();
 			}
 		}
-		Debug.Log("magnitude: " + playerControl.velocity.magnitude);
+		//Debug.Log("magnitude: " + playerControl.velocity.magnitude);
 		animator.SetFloat("MoveSpeed", playerControl.velocity.magnitude);
 	}
 

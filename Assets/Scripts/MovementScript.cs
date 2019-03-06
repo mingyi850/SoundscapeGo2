@@ -51,7 +51,7 @@ public class MovementScript : MonoBehaviour
 		//Debug.Log("Total Movement Speed: " + totalMovementSpeed);
 		// Move our Rigidbody to this position
 		controller.Move(movement);
-		animator.SetFloat("MoveSpeed", totalMovementSpeed);
+		animator.SetFloat("MoveSpeed", controller.velocity.magnitude);
 
 		// Get rotation input value
 		float rotationInput = GetRotationInput();
