@@ -17,7 +17,7 @@ namespace TTS
 {
 	public class TextToSpeechHandler: MonoBehaviour
 	{
-		private AudioSource voiceSource;
+		public AudioSource voiceSource;
 		private Queue<Vector3> audioDirQueue;
 		private Queue<LocalisedAudioClip> dirAudioQueue;
 		string ttsHost = "https://westeurope.tts.speech.microsoft.com/cognitiveservices/v1";
@@ -28,7 +28,6 @@ namespace TTS
 			
 			audioDirQueue = new Queue<Vector3> ();
 			dirAudioQueue = new Queue<LocalisedAudioClip>();
-			voiceSource = gameObject.GetComponent<AudioSource> ();
 		}
 
 		public string GetAccessToken()
@@ -78,6 +77,7 @@ namespace TTS
 					Debug.Log (request.error);
 					Debug.Log (request.ToString ());
 					Debug.Log (request.downloadHandler.data);
+
 				} 
 				else {
 					//Debug.Log (request.ToString ());
@@ -132,6 +132,8 @@ namespace TTS
 					Debug.Log (request.error);
 					Debug.Log (request.ToString ());
 					Debug.Log (request.downloadHandler.data);
+					//Use NULL Object pattern to prevent breaking.
+					dirAudioQueue.Enqueue(LocalisedAudioClip.nullLocalisedAudioClip());
 				} 
 				else {
 					//Debug.Log (request.ToString ());
@@ -149,8 +151,8 @@ namespace TTS
 
 
 		}
-		public IEnumerator playDirAudioQueue() {
-			yield return new WaitWhile (() => dirAudioQueue.Count < 3);
+		public IEnumerator playDirAudioQueue(int featureCount) {
+			yield return new WaitWhile (() => dirAudioQueue.Count < featureCount);
 			Debug.Log ("dirAudioQueue: " + dirAudioQueue.Count);
 			while (dirAudioQueue.Count != 0){
 				yield return new WaitWhile (() => voiceSource.isPlaying);
@@ -177,8 +179,8 @@ namespace TTS
 		public void playSingleDirAudio(LocalisedAudioClip currentAudio) {
 			voiceSource.clip = currentAudio.AudioFile;
 			Vector3 audioLocation = currentAudio.UnityLocation;
-			audioLocation.y = 5;
-			this.transform.position = audioLocation;
+			audioLocation.y = 1;
+			voiceSource.transform.position = audioLocation;
 			Debug.Log ("Current Location: " + transform.position.ToString() + "    " + audioLocation.ToString());
 			voiceSource.Play ();
 		}

@@ -23,6 +23,14 @@ public class LocalisedAudioClip {
 		this.unityLocation = unityLocation;
 	}
 
+
+	public static LocalisedAudioClip nullLocalisedAudioClip()
+	{
+		AudioClip nullaudio = AudioClip.Create("nullclip", 10, 1, 16000, false);
+		Vector3 nullLocation = new Vector3(0, 0, 0);
+		return new LocalisedAudioClip(nullaudio, nullLocation);
+	}
+
 	public AudioClip AudioFile {
 		get  { return this.audioFile; }
 	}

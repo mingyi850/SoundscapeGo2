@@ -123,13 +123,19 @@ public class PlayerLocation : MonoBehaviour {
 
 
 			//Construct Strings after validation
+
+			//To be displayed on info panel 
 			infoPanelString = (x + ". " + displayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId (result.EntityTypeID) + " " + additionalInfoUrl);
+			//To be read by TTS Handler
 			singleReadableString = x + ". " + displayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId (result.EntityTypeID) + " , " + relativeDirectionString;
 			//Get Relevant panel and text box:
-			Debug.Log("Finding Key: " + x);
 			Transform relavantPoiPanel = infoPanelMap [x];
 			TextMeshProUGUI relavantTextMesh = relavantPoiPanel.Find ("POI Info").GetComponent<TextMeshProUGUI> ();
 			relavantTextMesh.text = infoPanelString;
+
+			poiPanel gotoButton = relavantPoiPanel.GetComponent<poiPanel>();
+			gotoButton.setSendLocation(unityPos);
+
 
 			StartCoroutine (ttsHandler.GetTextToSpeech (singleReadableString, featureCount, unityPos));
 			x++;
@@ -142,7 +148,7 @@ public class PlayerLocation : MonoBehaviour {
 		infoHeaderTextMesh.text = getHeaderText(directionCode);
 		infoPanel.SetActive (true);
 		Debug.Log ("THIS PLAYER IS AT: " + getUnityPos (currentLocation.x, currentLocation.y).ToString());
-		ttsHandler.StartCoroutine (ttsHandler.playDirAudioQueue ());
+		ttsHandler.StartCoroutine (ttsHandler.playDirAudioQueue (featureCount));
 
 
 
