@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿#if !UNITY_EDITOR_OSX
+
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using Microsoft.CognitiveServices.Speech;
@@ -260,3 +262,4 @@ public class SpeechSDKStart : MonoBehaviour
 
 
 }
+#endif
