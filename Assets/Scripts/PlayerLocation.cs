@@ -137,7 +137,7 @@ public class PlayerLocation : MonoBehaviour {
 			gotoButton.setSendLocation(unityPos);
 
 
-			StartCoroutine (ttsHandler.GetTextToSpeech (singleReadableString, featureCount, unityPos));
+			StartCoroutine (ttsHandler.GetTextToSpeech (singleReadableString, featureCount, unityPos, true));
 			x++;
 			featureCount++;
 			if (featureCount == totalFeatureCount) {
