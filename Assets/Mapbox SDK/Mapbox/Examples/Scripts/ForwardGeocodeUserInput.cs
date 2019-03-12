@@ -19,7 +19,7 @@ namespace Mapbox.Examples
 		InputField _inputField;
 
 		ForwardGeocodeResource _resource;
-
+		string[] countries = { "GB", "FR" };
 		Vector2d _coordinate;
 		public Vector2d Coordinate
 		{
@@ -42,12 +42,14 @@ namespace Mapbox.Examples
 
 		//public event Action<> OnGeocoderResponse = delegate { };
 		public event Action<ForwardGeocodeResponse> OnGeocoderResponse = delegate { };
-
+		
 		void Awake()
 		{
 			_inputField = GetComponent<InputField>();
 			_inputField.onEndEdit.AddListener(HandleUserInput);
 			_resource = new ForwardGeocodeResource("");
+			_resource.Autocomplete = true;
+			
 		}
 
 		void HandleUserInput(string searchString)

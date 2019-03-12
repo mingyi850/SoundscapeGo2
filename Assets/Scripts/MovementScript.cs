@@ -13,6 +13,7 @@ public class MovementScript : MonoBehaviour
 
 	// How quickly player moves forward and back
 	public float speed;
+	public AudioSource collisionAudioSource;
 
 	// How quickly player rotates (degrees per second)
 	public float rotationSpeed = 180f;
@@ -121,15 +122,42 @@ public class MovementScript : MonoBehaviour
 			
 
 	void OnCollisionEnter(Collision collision) {
-		Vector3 movement = transform.forward * speed * 0.05f;
-
-		Debug.Log ("Collision");
+		Vector3 movement = transform.forward * speed * 0.02f;
+		collisionAudioSource.transform.position = transform.position + (transform.forward * 2.0f);
+		collisionAudioSource.Play();
+		Debug.Log("Collision Start");
+		
 		//body.velocity = Vector3.zero;
 		//body.MovePosition (body.position - movement);
 	}
 
-
+	/*void OnCollisionStay(Collision collision)
+	{
+		if (checkValidCollision(collision))
+		{
+			Debug.Log("Still in valid collision");
+			collisionAudioSource.transform.position = collision.transform.position;
+			collisionAudioSource.Play();
+		}
 		
+	}*/
+
+	private bool checkValidCollision(Collision collision)
+	{
+		Vector3 collisionLocation = collision.transform.position;
+		Debug.Log("Collisoin location y: " + collisionLocation.y);
+		if (collisionLocation.y > 0.4)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+
+
 
 
 

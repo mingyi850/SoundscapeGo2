@@ -70,6 +70,7 @@ namespace TTS
 				Debug.Log(request.GetRequestHeader("User-Agent"));
 				Debug.Log(request.GetRequestHeader("X-Microsoft-OutputFormat"));
 				Debug.Log("Calling the TTS service. Please wait... \n");
+				Debug.Log("Request Body: " + System.Text.Encoding.UTF8.GetString(request.uploadHandler.data));
 				yield return request.SendWebRequest ();
 				if (request.isNetworkError || request.isHttpError) {
 					Debug.Log (request.error);
@@ -131,11 +132,13 @@ namespace TTS
 
 		public void playSingleDirAudio(LocalisedAudioClip currentAudio) {
 			directionalVoiceSource.clip = currentAudio.AudioFile;
+			Debug.Log(directionalVoiceSource.clip.length + " is the length of this clip");
 			Vector3 audioLocation = currentAudio.UnityLocation;
 			audioLocation.y = 1;
 			directionalVoiceSource.transform.position = audioLocation;
 			Debug.Log ("Current Location: " + transform.position.ToString() + "    " + audioLocation.ToString());
 			directionalVoiceSource.Play ();
+	
 		}
 
 		public IEnumerator playTTS(string toBeConverted)

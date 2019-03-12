@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+﻿#if !UNITY_EDITOR_OSX
+
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using Microsoft.CognitiveServices.Speech;
+
 using System.Collections;
 using System.Collections.Generic;
 using System;
@@ -41,7 +44,7 @@ public class SpeechSDKStart : MonoBehaviour
 	private string executableMessage = "";
 
 
-	
+
 	#if PLATFORM_ANDROID
 	// Required to manifest microphone permission, cf.
 	// https://docs.unity3d.com/Manual/android-manifest.html
@@ -260,3 +263,4 @@ public class SpeechSDKStart : MonoBehaviour
 
 
 }
+#endif

@@ -9,9 +9,9 @@
 
 	public class ReloadMap : MonoBehaviour
 	{
-		Camera _camera;
-		Vector3 _cameraStartPos;
-		AbstractMap _map;
+		public Camera _camera;
+		private Vector3 _cameraStartPos;
+		private AbstractMap _map;
 
 		[SerializeField]
 		ForwardGeocodeUserInput _forwardGeocoder;
@@ -27,7 +27,7 @@
 
 		void Awake()
 		{
-			_camera = Camera.main;
+			//_camera = Camera.main;
 			_cameraStartPos = _camera.transform.position;
 			_map = FindObjectOfType<AbstractMap>();
 			if(_map == null)
@@ -72,7 +72,7 @@
 			}
 			if (resetCamera)
 			{
-				_camera.transform.position = _cameraStartPos;
+				//_camera.transform.position = _cameraStartPos;
 			}
 			ForwardGeocoder_OnGeocoderResponse(response);
 		}
@@ -90,7 +90,7 @@
 		IEnumerator ReloadAfterDelay(int zoom)
 		{
 			yield return _wait;
-			_camera.transform.position = _cameraStartPos;
+			//_camera.transform.position = _cameraStartPos;
 			_map.UpdateMap(_map.CenterLatitudeLongitude, zoom);
 			_reloadRoutine = null;
 		}
