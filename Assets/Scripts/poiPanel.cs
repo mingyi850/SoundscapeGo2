@@ -17,6 +17,7 @@ public class poiPanel : MonoBehaviour
 {
 	private Vector3 sendLocation;
 	public AudioBeacon beacon;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +32,34 @@ public class poiPanel : MonoBehaviour
 	public void setSendLocation(Vector3 location)
 	{
 		sendLocation = location;
+	}
+
+	public int isASavedMarker(string name)
+	{
+		return 0;
+	}
+
+	public void SaveButtonClicked() 
+  {
+        if (isASavedMarker("name") == 0)
+            SaveMarker();
+        else if (isASavedMarker("name") == 1)
+            DeleteMarker();
+  }
+
+	private void SaveMarker()
+  {
+        Debug.Log("Marker saved");
+        //markerState = 1;
+        //saveButtonComponent.GetComponent<Image>().color = Color.red;
+  }
+
+	private void DeleteMarker()
+  {
+        //markerState = 0;
+        //saveButtonComponent.GetComponent<Image>().color = Color.white;
+        Debug.Log("Marker deleted");
+
 	}
 	
     
