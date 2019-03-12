@@ -27,9 +27,9 @@ public class SampleDestinationButton : MonoBehaviour
     {
         destination = currentDestination;
         nameLabel.text = destination.destinationName;
-        destination.longitude = currentDestination.longitude;
-        destination.latitude = currentDestination.latitude;
-        var distance = DistanceCalculator.getDistanceBetweenPlaces(destination.longitude, destination.latitude, deviceLocation.y, deviceLocation.x);
+        destination.coordinates.x = currentDestination.coordinates.x;
+        destination.coordinates.y = currentDestination.coordinates.y;
+        var distance = DistanceCalculator.getDistanceBetweenPlaces(destination.coordinates.y, destination.coordinates.x, deviceLocation.y, deviceLocation.x);
         if (distance < 1.0)
         {
             distance = RoundMeters(distance * 100);
@@ -42,8 +42,8 @@ public class SampleDestinationButton : MonoBehaviour
 
     public void passCoordinatesToNextScene()
     {
-        PlayerPrefs.SetFloat("longitude", this.destination.longitude);
-        PlayerPrefs.SetFloat("latitude", this.destination.latitude);
+        PlayerPrefs.SetFloat("longitude", this.destination.coordinates.y);
+        PlayerPrefs.SetFloat("latitude", this.destination.coordinates.x);
     }
 
     public void LoadNextScene()
