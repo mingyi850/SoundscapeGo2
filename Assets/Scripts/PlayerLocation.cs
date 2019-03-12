@@ -149,11 +149,6 @@ public class PlayerLocation : MonoBehaviour {
 		infoPanel.SetActive (true);
 		Debug.Log ("THIS PLAYER IS AT: " + getUnityPos (currentLocation.x, currentLocation.y).ToString());
 		ttsHandler.StartCoroutine (ttsHandler.playDirAudioQueue (featureCount));
-
-
-
-
-
 	}
 
 	string getHeaderText(int directionCode) {
