@@ -6,16 +6,21 @@ public class MarkersManager : MonoBehaviour
 {
     private static int playerPrefsCurrentArraySize = 0;
     public int playerPrefsMaxArraySize = 100;
-    public static Dictionary<string, Vector2> savedMarkers = new Dictionary<string, Vector2>();
+    public Dictionary<string, Vector2> savedMarkers = new Dictionary<string, Vector2>();
     string [] nameList = new string[playerPrefsCurrentArraySize];
     Vector2 [] coordinateList = new Vector2[playerPrefsCurrentArraySize];
-
 
     // Start is called before the first frame update
     void Start()
     {
         ReadPlayerPrefsData();
         DisplayMarkersDictionary();
+        PlayerPrefs.GetInt("listLength", playerPrefsCurrentArraySize);
+    }
+
+    void OnApplicationQuit()
+    {
+        SavePlayerPrefsData();
     }
 
     private void ReadPlayerPrefsData() 
@@ -51,6 +56,7 @@ public class MarkersManager : MonoBehaviour
         }
         PlayerPrefsX.SetStringArray("nameList", nameList);
         PlayerPrefsX.SetVector2Array("coordinateList", coordinateList);
+        PlayerPrefs.SetInt("listLength", playerPrefsCurrentArraySize);
     } 
 
     private void DisplayMarkersDictionary()

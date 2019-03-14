@@ -17,7 +17,18 @@ public class MarkerScrollList : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        UpdateMarkersList();
         RefreshDisplay();
+    }
+
+    private void UpdateMarkersList()
+    {
+        markerLists.Clear();
+        foreach(KeyValuePair<string, Vector2> entry in markersManager.savedMarkers)
+        {
+            Destination destination = new Destination(entry.Key, entry.Value.x, entry.Value.y);
+            markerLists.Add(destination);
+        }
     }
 
     public void RefreshDisplay() 

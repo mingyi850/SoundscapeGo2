@@ -15,7 +15,7 @@ public class SampleMarkerButton : MonoBehaviour {
     private Vector2 coordinates;
     private MarkerScrollList scrollList;
     private GameObject UIManagerObject;
-    private int markerState = 0;
+    private int markerState = 1;
 
     
     public void Setup(Destination currentDestination, MarkerScrollList currentScrollList, GameObject UIManager, MarkersManager currentMarkersManager) 
