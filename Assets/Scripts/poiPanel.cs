@@ -17,49 +17,45 @@ public class poiPanel : MonoBehaviour
 {
 	private Vector3 sendLocation;
 	public AudioBeacon beacon;
+  public MarkersManager markersManager;
+  public TextMeshProUGUI textField;
+  public Vector2 coordinates;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-		sendLocation = Vector3.zero;
-    }
+  // Start is called before the first frame update
+  void Start()
+  {
+  	sendLocation = Vector3.zero;
+  }
 
 	public void sendBeacon()
 	{
-		beacon.setActiveBeacon(sendLocation);
+		  beacon.setActiveBeacon(sendLocation);
 	}
 
 	public void setSendLocation(Vector3 location)
 	{
-		sendLocation = location;
-	}
-
-	public int isASavedMarker(string name)
-	{
-		return 0;
+		  sendLocation = location;
 	}
 
 	public void SaveButtonClicked() 
   {
-        if (isASavedMarker("name") == 0)
+        if (markersManager.isASavedMarker(textField.text) == 0)
             SaveMarker();
-        else if (isASavedMarker("name") == 1)
+        else if (markersManager.isASavedMarker(textField.text) == 1)
             DeleteMarker();
   }
 
 	private void SaveMarker()
   {
-        Debug.Log("Marker saved");
-        //markerState = 1;
-        //saveButtonComponent.GetComponent<Image>().color = Color.red;
+      Debug.Log("Marker saved");
+      markersManager.SaveMarker(textField.text, new Vector2(coordinates.x, coordinates.y));
   }
 
 	private void DeleteMarker()
   {
-        //markerState = 0;
-        //saveButtonComponent.GetComponent<Image>().color = Color.white;
-        Debug.Log("Marker deleted");
-
+      markersManager.DeleteMarker(textField.text);    
+      Debug.Log("Marker deleted");
+        
 	}
 	
     

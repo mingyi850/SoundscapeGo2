@@ -1856,6 +1856,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   beacon: {fileID: 1415482622}
+  markersManager: {fileID: 1469375626}
+  textField: {fileID: 752858282}
 --- !u!1 &326320949
 GameObject:
   m_ObjectHideFlags: 0
@@ -2056,6 +2058,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   beacon: {fileID: 1415482622}
+  markersManager: {fileID: 1469375626}
+  textField: {fileID: 1239413637}
 --- !u!1 &360607306
 GameObject:
   m_ObjectHideFlags: 0
@@ -2276,6 +2280,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 389170226}
   m_CullTransparentMesh: 0
+--- !u!114 &405918796 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5966659642948255578, guid: 1731c0b7025719a44801e747fc3696cd,
+    type: 3}
+  m_PrefabInstance: {fileID: 5966659642719585658}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &412890305
 GameObject:
   m_ObjectHideFlags: 0
@@ -2763,7 +2779,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -206.07, y: -397.4}
+  m_AnchoredPosition: {x: -206.06982, y: -397.4004}
   m_SizeDelta: {x: -412.2, y: -1314.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &526188770
@@ -5930,6 +5946,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   beacon: {fileID: 1415482622}
+  markersManager: {fileID: 1469375626}
+  textField: {fileID: 405918796}
 --- !u!21 &1338817330
 Material:
   serializedVersion: 6
@@ -8650,7 +8668,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000038144026, y: -0.0001397529}
+  m_AnchoredPosition: {x: 0.00016657036, y: -0.00008753031}
   m_SizeDelta: {x: -0.000061035, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1642132340
@@ -11369,7 +11387,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1515816940}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999999
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

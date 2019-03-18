@@ -33,6 +33,7 @@ public class MarkerScrollList : MonoBehaviour
 
     public void RefreshDisplay() 
     {
+        UpdateMarkersList();
         RemoveButtons();
         AddButtons();
     }
