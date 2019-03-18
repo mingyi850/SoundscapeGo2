@@ -1858,6 +1858,7 @@ MonoBehaviour:
   beacon: {fileID: 1415482622}
   markersManager: {fileID: 1469375626}
   textField: {fileID: 752858282}
+  coordinates: {x: 0, y: 0}
 --- !u!1 &326320949
 GameObject:
   m_ObjectHideFlags: 0
@@ -2060,6 +2061,7 @@ MonoBehaviour:
   beacon: {fileID: 1415482622}
   markersManager: {fileID: 1469375626}
   textField: {fileID: 1239413637}
+  coordinates: {x: 0, y: 0}
 --- !u!1 &360607306
 GameObject:
   m_ObjectHideFlags: 0
@@ -5948,6 +5950,7 @@ MonoBehaviour:
   beacon: {fileID: 1415482622}
   markersManager: {fileID: 1469375626}
   textField: {fileID: 405918796}
+  coordinates: {x: 0, y: 0}
 --- !u!21 &1338817330
 Material:
   serializedVersion: 6
@@ -6657,7 +6660,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb330cd67827444fdaa1e1d703ce53e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefsMaxArraySize: 100
 --- !u!4 &1469375627
 Transform:
   m_ObjectHideFlags: 0
@@ -6967,6 +6969,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1595682813}
         m_MethodName: MarkersPanelSlideOut
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1642132342}
+        m_MethodName: RefreshDisplay
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8668,7 +8681,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00016657036, y: -0.00008753031}
+  m_AnchoredPosition: {x: 0.00013838949, y: -0.00005823962}
   m_SizeDelta: {x: -0.000061035, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1642132340
