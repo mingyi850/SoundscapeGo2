@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -81,7 +81,8 @@ namespace Scripts.BingMapClasses {
 
 				return rootObject.d.results;
 
-			} else {
+			} else 
+               {
 				return new List<Result> ();
 			}
 

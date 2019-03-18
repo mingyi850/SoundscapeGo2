@@ -8,14 +8,12 @@ using UnityEngine.UI;
 public class Destination
 {
     public string destinationName;
-    public float longitude;
-    public float latitude;
+    public Vector2 coordinates;
 
     public Destination(string nameLabel, float lat, float longit)
     {
         destinationName = nameLabel;
-        latitude = lat;
-        longitude = longit;
+        coordinates = new Vector2(lat, longit);
     }
 }
 

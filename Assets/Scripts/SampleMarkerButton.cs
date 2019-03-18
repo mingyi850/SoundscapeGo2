@@ -9,19 +9,22 @@ public class SampleMarkerButton : MonoBehaviour {
     public Button gotoButtonComponent;
     public Button saveButtonComponent;
     public TMP_Text nameLabel;
+    public MarkersManager markersManager;
     
-    private Destination destination;
+
+    private Vector2 coordinates;
     private MarkerScrollList scrollList;
     private GameObject UIManagerObject;
-    private int markerState = 0;
+    private int markerState = 1;
 
     
-    public void Setup(Destination currentDestination, MarkerScrollList currentScrollList, GameObject UIManager) 
+    public void Setup(Destination currentDestination, MarkerScrollList currentScrollList, GameObject UIManager, MarkersManager currentMarkersManager) 
     {
-        destination = currentDestination;
-        nameLabel.text = destination.destinationName;
+        coordinates = currentDestination.coordinates;
+        nameLabel.text = currentDestination.destinationName;
         scrollList = currentScrollList;
         UIManagerObject = UIManager;
+        markersManager = currentMarkersManager;
     }
 
     public void SaveButtonClicked() 
@@ -34,6 +37,7 @@ public class SampleMarkerButton : MonoBehaviour {
 
     private void SaveMarker()
     {
+        markersManager.SaveMarker(nameLabel.text, coordinates);
         Debug.Log("Marker saved");
         markerState = 1;
         //saveButtonComponent.GetComponent<Image>().color = Color.red;
@@ -41,6 +45,7 @@ public class SampleMarkerButton : MonoBehaviour {
 
     private void DeleteMarker()
     {
+        markersManager.DeleteMarker(nameLabel.text);
         markerState = 0;
         //saveButtonComponent.GetComponent<Image>().color = Color.white;
         Debug.Log("Marker deleted");
