@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using UnityEditor;
 using TTS;
 using ButtonSelect;
+using Scripts.Locator;
+using BingSearch;
 
 public class LayeredButton : MonoBehaviour
 {
@@ -12,19 +14,23 @@ public class LayeredButton : MonoBehaviour
 	private ButtonSelector buttonSelector;
 	private PlayerLocation playerlocation;
 	private TextToSpeechHandler ttsHandler;
+	private Locator locator;
 	private UIManager uiManager;
 	private string buttonText;
+	private BingSearchHandler bingSearchHandler;
 
 	public string buttonID;
 	// Start is called before the first frame update
 	void Start()
 	{
 		buttonText = gameObject.GetComponentInChildren<Text>().text;
-
+		
 		buttonSelector = GetComponentInParent<ButtonSelector>();
 		playerlocation = GameObject.Find("Player").GetComponent<PlayerLocation>();
 		ttsHandler = GameObject.Find("TextToSpeechHandler").GetComponent<TextToSpeechHandler>();
 		uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+		locator = GameObject.Find("Player").GetComponent<Locator>();
+		bingSearchHandler = GameObject.Find("BingSearchHandler").GetComponent<BingSearchHandler>();
 	}
 
 	// Update is called once per frame
@@ -67,7 +73,9 @@ public class LayeredButton : MonoBehaviour
 		}
 		else
 		{
-			playerlocation.getNearbyFeatures(1);
+			string addressString = locator.getAddress();
+			string bingMapsQuery = string.Format("https://bing.com/maps/default.aspx?where1={0}", addressString);
+			Application.OpenURL(bingMapsQuery);
 			buttonSelector.setLastClickedId("");
 		}
 	}
@@ -98,10 +106,13 @@ public class LayeredButton : MonoBehaviour
 		}
 	}
 
+
+
 	public void firstClick()
 	{
 		StartCoroutine(ttsHandler.GetTextToSpeech(buttonText, 0, Vector3.zero, false));
 		buttonSelector.setLastClickedId(buttonID);
 	}
-	}
+}
+
 

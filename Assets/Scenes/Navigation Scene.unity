@@ -290,7 +290,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 169874434}
+  - component: {fileID: 52833363}
   m_Layer: 0
   m_Name: Recovery GameObject (169874434)
   m_TagString: Untagged
@@ -305,6 +305,20 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1696962376}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &52833363
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52833361}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -773,7 +787,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 151488264}
   m_CullTransparentMesh: 0
---- !u!224 &169874434
+--- !u!224 &169874434 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1785214665885834314, guid: 946161f34d9d43341a6b0df7f5c5b3ba,
     type: 3}
@@ -2287,7 +2301,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 401474810}
-  - component: {fileID: 169874436}
   m_Layer: 0
   m_Name: Recovery GameObject (169874436)
   m_TagString: Untagged
@@ -5875,12 +5888,6 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
---- !u!224 &1347769412 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 1785214665885834314, guid: 946161f34d9d43341a6b0df7f5c5b3ba,
-    type: 3}
-  m_PrefabInstance: {fileID: 1785214665984395336}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1388191010
 GameObject:
   m_ObjectHideFlags: 0
@@ -8425,7 +8432,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00010201983, y: -0.000016893107}
+  m_AnchoredPosition: {x: 0.000083658284, y: -0.00008898142}
   m_SizeDelta: {x: -0.000061035, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1642132340
@@ -8832,6 +8839,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f55ec853fb854abe8e0c4171317625e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BingMapsClassesLocatorScript: {fileID: 0}
 --- !u!114 &1714461732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10175,7 +10183,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1853910089}
-  - component: {fileID: 169874438}
   m_Layer: 0
   m_Name: Recovery GameObject (169874438)
   m_TagString: Untagged
@@ -10326,7 +10333,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -150, y: -384.90002}
+  m_AnchoredPosition: {x: -150, y: -384.9004}
   m_SizeDelta: {x: -360, y: -1339.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1877463553
