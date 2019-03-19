@@ -127,8 +127,7 @@ namespace Scripts.Locator
             Debug.Log(currentLocationVector.ToString());
             string currentLocation = currentLocationVector.ToString();
             Debug.Log(currentLocation);
-            Locator bmcl = new Locator();
-            string currentAddress = bmcl.requestAddressFromBingMaps(currentLocation);
+            string currentAddress = requestAddressFromBingMaps(currentLocation);
             return currentAddress;
         }
 
