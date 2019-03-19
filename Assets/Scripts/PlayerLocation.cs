@@ -73,15 +73,12 @@ public class PlayerLocation : MonoBehaviour {
 		Debug.Log(mapCenter.ToString() + " from getLongLat");
 		newX = mapCenter.x + longLatChange.x;
 		newY = mapCenter.y + longLatChange.y;*/
-
 		newLatLong = locationProvider.CurrentLocation.LatitudeLongitude;
 		return newLatLong;
 		//return new Vector2d (newX, newY);
-
-
 	}
 
-	public Vector3 getUnityPos(double lat, double lon) {
+    public Vector3 getUnityPos(double lat, double lon) {
 		Vector2 latlon = new Vector2((float)(lat), (float)(lon));
 		return VectorExtensions.AsUnityPosition (latlon, abstractMap.CenterMercator, (abstractMap.WorldRelativeScale)); //* 1.5f
 	}

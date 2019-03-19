@@ -26,20 +26,19 @@ public class Locator : MonoBehaviour
     private TextToSpeechHandler ttsHandler;
     private BingSearchHandler bsHandler;
     private BingMapsClassesLocator.address streetAddress;
-    private ILocationProvider locationProvider;
+    private PlayerLocation playerLocation;
 
     // Use this for initialization
 
     public IEnumerator Start()
     {
-        locationProvider = locationProviderFactory.TransformLocationProvider;
-        //locationProvider = GameObject.Find("LocationProviderFactoryObject").GetComponent<LocationProviderFactory>().TransformLocationProvider;
-        Debug.Log(locationProvider);
         abstractMap = GameObject.Find("Map").GetComponent<AbstractMap>();
+        //getLongLat = GameObject.Find("Player").GetComponent<PlayerLocation>();
+        playerLocation = FindObjectOfType<PlayerLocation>();
+        playerLocation.getLongLat();
         //streetAddress = GameObject.Find("BingMapsClassesLocator").GetComponent<BingMapsClassesLocator.address>();
         //Debug.Log(streetAddress);
         yield return new WaitUntil(() => abstractMap.isReady == true);
-
         mapCenter = abstractMap.getCenterLongLat();
     }
 
@@ -48,44 +47,23 @@ public class Locator : MonoBehaviour
         //Debug.Log("CurrentPosition is: " + getLongLat().ToString());
     }
 
-    public Vector2d getLongLat()
-    {
-        Vector2d newLatLong;
-        newLatLong = locationProvider.CurrentLocation.LatitudeLongitude;
-        double Lat = newLatLong.x;
-        double Long = newLatLong.y;
-        newLatLong.x = Long;
-        newLatLong.y = Lat;
-        Debug.Log(newLatLong);
-        return newLatLong;
-    }
-
-
-    //public Vector2d getLongLat()
-    //{
-    //    Vector2d newLatLong = locationProvider.CurrentLocation.LatitudeLongitude;
-    //    double Lat = newLatLong.x;
-    //    double Long = newLatLong.y;
-    //    newLatLong.x = Long;
-    //    newLatLong.y = Lat;
-    //    Debug.Log(newLatLong);
-    //    return newLatLong;
-    //}
 
     public string getAddress()
     {
-        Vector2d currentLocationVector = getLongLat();
-        Debug.Log(currentLocationVector);
-
+        Vector2d currentLocationVector = playerLocation.getLongLat();
+        double Lat = currentLocationVector.x;
+        double Long = currentLocationVector.y;
+        currentLocationVector.x = Long;
+        currentLocationVector.y = Lat;
+        Debug.Log(currentLocationVector.ToString());
         string currentLocation = currentLocationVector.ToString();
         Debug.Log(currentLocation);
-
-        //string latLong = BingMapsClassesLocator.requestAddressFromBingMaps();
-        //string currentAddress = BingMapsClassesLocator.requestAddressFromBingMaps(string addressLine);
         BingMapsClassesLocator bmcl = new BingMapsClassesLocator();
         string currentAddress = bmcl.requestAddressFromBingMaps(currentLocation);
         return currentAddress;
 
+        //string latLong = BingMapsClassesLocator.requestAddressFromBingMaps();
+        //string currentAddress = BingMapsClassesLocator.requestAddressFromBingMaps(string addressLine);
         //string displayAddress = BingMapsClassesLocator.rootObjectAddress.resourceSets[0].resources[0].address.addressLine;
         //BingMapsClassesLocator.rootObjectAddress.resourceSets[0].resources[0].address.addressLine
         //}

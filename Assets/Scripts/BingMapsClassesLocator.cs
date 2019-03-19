@@ -53,7 +53,7 @@ namespace Scripts.BingMapClassesLocator
         public class address
         {
             public string addressLine;
-
+           
         }
 
         public string requestAddressFromBingMaps(string latLong)
