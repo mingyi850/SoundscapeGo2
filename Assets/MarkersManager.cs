@@ -1,14 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MarkersManager : MonoBehaviour
 {
     private static int playerPrefsCurrentArraySize = 0;
-    public int playerPrefsMaxArraySize = 100;
+    public static int playerPrefsMaxArraySize = 100;
     public Dictionary<string, Vector2> savedMarkers = new Dictionary<string, Vector2>();
-    string [] nameList = new string[playerPrefsCurrentArraySize];
-    Vector2 [] coordinateList = new Vector2[playerPrefsCurrentArraySize];
+    string [] nameList = new string[playerPrefsMaxArraySize];
+    Vector2 [] coordinateList = new Vector2[playerPrefsMaxArraySize];
 
     // Start is called before the first frame update
     void Start()
@@ -46,13 +47,18 @@ public class MarkersManager : MonoBehaviour
 
     private void SavePlayerPrefsData()
     {
-        int i = 0;
+        for (int i = 0; i < playerPrefsMaxArraySize; i++)
+        {
+            nameList[i] = "null";
+            coordinateList[i] = Vector2.zero;
+        }
+        int j = 0;
         foreach(KeyValuePair<string, Vector2> entry in savedMarkers)
         {
             // do something with entry.Value or entry.Key
-            nameList[i] = entry.Key;
-            coordinateList[i] = entry.Value;
-            i++;
+            nameList[j] = entry.Key;
+            coordinateList[j] = entry.Value;
+            j++;
         }
         PlayerPrefsX.SetStringArray("nameList", nameList);
         PlayerPrefsX.SetVector2Array("coordinateList", coordinateList);
@@ -80,6 +86,14 @@ public class MarkersManager : MonoBehaviour
         savedMarkers.Remove(name);
         playerPrefsCurrentArraySize--;
         DisplayMarkersDictionary();     // Debug
+    }
+
+    public int isASavedMarker(string name)
+    {
+        if (savedMarkers.ContainsKey(name))
+            return 1;
+        else 
+            return 0;
     }
 
     // Update is called once per frame

@@ -116,13 +116,14 @@ public class PlayerLocation : MonoBehaviour {
 			// 2. Gather Display characteristics
 			string displayName = result.DisplayName;;
 			string rawUrl = bsHandler.getLinkResult (displayName);
-			string additionalInfoUrl = string.Format ("<link=\"{0}\"><color=yellow>{1}</color></link>", rawUrl, rawUrl);
+			string additionalInfoUrl = string.Format ("<link=\"{0}\"><color=yellow>{1}</color></link>", rawUrl, "Display Text");
 
 
 			//Construct Strings after validation
 
 			//To be displayed on info panel 
-			infoPanelString = (x + ". " + displayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId (result.EntityTypeID) + " " + additionalInfoUrl);
+			infoPanelString = (x + ". " + "<color=yellow>"+displayName+"</color>" + "\n" + result.AddressLine + "\n" + BingMapsEntityId.getEntityNameFromId (result.EntityTypeID));
+			infoPanelString = string.Format("<link=\"{0}\">{1}</link>", rawUrl, infoPanelString);
 			//To be read by TTS Handler
 			singleReadableString = x + ". " + displayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId (result.EntityTypeID) + " , " + relativeDirectionString;
 			//Get Relevant panel and text box:
@@ -132,6 +133,8 @@ public class PlayerLocation : MonoBehaviour {
 
 			poiPanel gotoButton = relavantPoiPanel.GetComponent<poiPanel>();
 			gotoButton.setSendLocation(unityPos);
+			gotoButton.coordinates.x = (float)currentLocation.x;
+			gotoButton.coordinates.y = (float)currentLocation.y;
 
 
 			StartCoroutine (ttsHandler.GetTextToSpeech (singleReadableString, featureCount, unityPos, true));
