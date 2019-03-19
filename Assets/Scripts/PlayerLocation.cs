@@ -78,7 +78,6 @@ public class PlayerLocation : MonoBehaviour {
 		return newLatLong;
 		//return new Vector2d (newX, newY);
 
-
 	}
 
 	public Vector3 getUnityPos(double lat, double lon) {
