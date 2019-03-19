@@ -14,7 +14,7 @@ public class locationStreetPanelScript : MonoBehaviour
     private TextMeshProUGUI locationTextMeshAddress;
     private GameObject address1;
     private AbstractMap map;
-    public Locator locatorScript;
+    public BingMapsClassesLocator BingMapsClassesLocatorScript;
 
 
     // Start is called before the first frame update
@@ -23,7 +23,7 @@ public class locationStreetPanelScript : MonoBehaviour
         locationTextMeshAddress = gameObject.GetComponent<TextMeshProUGUI>();
         address1 = GameObject.Find("Player");
         map = GameObject.Find("Map").GetComponent<AbstractMap>();
-        locatorScript = address1.GetComponent<Locator>();
+        BingMapsClassesLocatorScript = address1.GetComponent<BingMapsClassesLocator>();
         StartCoroutine(CoroutineAddress());
     }
 
@@ -33,7 +33,7 @@ public class locationStreetPanelScript : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(5f);
-            locationTextMeshAddress.text = locatorScript.getAddress();
+            locationTextMeshAddress.text = BingMapsClassesLocatorScript.getAddress();
             Debug.Log("CoroutineAddress: " + Time.time);
         }
     }
