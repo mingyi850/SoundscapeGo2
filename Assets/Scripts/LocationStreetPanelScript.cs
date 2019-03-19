@@ -9,7 +9,7 @@ using Mapbox.Utils;
 using Scripts.BingMapClassesLocator;
 
 
-public class locationStreetPanelScript : MonoBehaviour
+public class LocationStreetPanelScript : MonoBehaviour
 {
     private TextMeshProUGUI locationTextMeshAddress;
     private GameObject address1;
@@ -29,6 +29,7 @@ public class locationStreetPanelScript : MonoBehaviour
 
     public IEnumerator CoroutineAddress()
     {
+		Debug.Log("Coroutine Address Started");
         yield return new WaitUntil(() => map.isReady == true);
         while (true)
         {
