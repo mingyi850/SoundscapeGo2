@@ -1,8 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-
+using Mapbox.Utils;
+using Mapbox.Unity.Map;
+using Mapbox.Unity.Location;
+using UnityEngine.UI;
+using TMPro;
 
 namespace Scripts.BingMapClassesLocator
 {
@@ -10,7 +13,12 @@ namespace Scripts.BingMapClassesLocator
     [System.Serializable]
     public class BingMapsClassesLocator : MonoBehaviour
     {
-
+        public TextMeshProUGUI locationTextMeshAddress;
+        public TextMeshProUGUI infoTextMesh;
+        public LocationProviderFactory locationProviderFactory;
+        public AbstractMap abstractMap;
+        public Vector2d mapCenter;
+        private PlayerLocation playerLocation;
         private string addressStreet;
         public static T[] getJsonArray<T>(string JSONString)
         {
@@ -76,7 +84,7 @@ namespace Scripts.BingMapClassesLocator
             {
                 string jsonAddress = System.Text.Encoding.UTF8.GetString(requestAddress.bytes, 0, requestAddress.bytes.Length);
                 Debug.Log(jsonAddress);
-                BingMapsClassesLocator.RootObjectAddress rootObjectAddress = BingMapsClassesLocator.getRootObjectAddress(jsonAddress);
+                RootObjectAddress rootObjectAddress = getRootObjectAddress(jsonAddress);
                 obtainedAddress = rootObjectAddress.resourceSets[0].resources[0].address.addressLine;
                 Debug.Log(obtainedAddress);
                 this.addressStreet = obtainedAddress;
@@ -99,5 +107,40 @@ namespace Scripts.BingMapClassesLocator
             Debug.Log(queryAddressURL);
             return queryAddressURL;
         }
+
+        public IEnumerator Start()
+        {
+            abstractMap = GameObject.Find("Map").GetComponent<AbstractMap>();
+            playerLocation = FindObjectOfType<PlayerLocation>();
+            playerLocation.getLongLat();
+            yield return new WaitUntil(() => abstractMap.isReady == true);
+            mapCenter = abstractMap.getCenterLongLat();
+        }
+
+        public string getAddress()
+        {
+            Vector2d currentLocationVector = playerLocation.getLongLat();
+            double Lat = currentLocationVector.x;
+            double Long = currentLocationVector.y;
+            currentLocationVector.x = Long;
+            currentLocationVector.y = Lat;
+            Debug.Log(currentLocationVector.ToString());
+            string currentLocation = currentLocationVector.ToString();
+            Debug.Log(currentLocation);
+            BingMapsClassesLocator bmcl = new BingMapsClassesLocator();
+            string currentAddress = bmcl.requestAddressFromBingMaps(currentLocation);
+            return currentAddress;
+        }
+
+        void Update()
+        {
+
+        }
+
+        void updateInfoPanel(Text textBox, string content)
+        {
+            textBox.text = content;
+        }
     }
 }
+
