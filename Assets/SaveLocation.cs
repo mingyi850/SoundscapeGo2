@@ -10,11 +10,13 @@ using UnityEngine.SceneManagement;
 
 public class SaveLocation : MonoBehaviour
 {
-	private ForwardGeocodeUserInput fowardGeocoder;
+	private bool newSearchResultPassed = false;
+	private ForwardGeocodeUserInput forwardGeocoder;
 	// Start is called before the first frame update
 	void Start()
 	{
-		fowardGeocoder = gameObject.GetComponent<ForwardGeocodeUserInput>();
+		forwardGeocoder = gameObject.GetComponent<ForwardGeocodeUserInput>();
+		newSearchResultPassed = false;
 	}
 
 	// Update is called once per frame
@@ -31,16 +33,25 @@ public class SaveLocation : MonoBehaviour
 		PlayerPrefs.SetFloat("currentY", yCoordinate);
 	}
 
-	private void passSearchResultToPlayerPrefs()
+	private IEnumerator passSearchResultToPlayerPrefs()
 	{
-		Vector2d currentCoordinate = fowardGeocoder.Coordinate;
+		yield return new WaitUntil(() => forwardGeocoder.HasResponse);
+		Vector2d currentCoordinate = forwardGeocoder.Coordinate;
+		Debug.Log("Geocoder current coordinate" + currentCoordinate.ToString());
 		passCoordinateToPlayerPrefs(currentCoordinate);
+		newSearchResultPassed = true;
 	}
 
 
-	public void goToSetLocationScene()
+	private IEnumerator goToSetLocationScene()
 	{
-		passSearchResultToPlayerPrefs();
+		StartCoroutine(passSearchResultToPlayerPrefs());
+		yield return new WaitUntil(() => newSearchResultPassed);
 		SceneManager.LoadScene("Navigation Scene");
+	}
+
+	public void LoadNextPageFunction()
+	{
+		StartCoroutine(goToSetLocationScene());
 	}
 }

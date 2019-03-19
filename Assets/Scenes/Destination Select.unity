@@ -804,7 +804,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1026514608}
-        m_MethodName: goToSetLocationScene
+        m_MethodName: LoadNextPageFunction
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1172,7 +1172,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00012629745, y: 0.0000901517}
+  m_AnchoredPosition: {x: 0.000007896794, y: 0.0016818987}
   m_SizeDelta: {x: 0, y: 1567}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1387290882
@@ -1212,41 +1212,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destinationList:
   - destinationName: St Pancras Station
-    longitude: -0.12394
-    latitude: 51.530827
+    coordinates: {x: 0, y: 0}
   - destinationName: UCL
-    longitude: -0.133656
-    latitude: 51.52468
+    coordinates: {x: 0, y: 0}
   - destinationName: Royal National Hotel
-    longitude: -0.127677
-    latitude: 51.523773
+    coordinates: {x: 0, y: 0}
   - destinationName: Bedford Square
-    longitude: -0.130001
-    latitude: 51.51898
+    coordinates: {x: 0, y: 0}
   - destinationName: Bedford Square
-    longitude: -0.130001
-    latitude: 51.51898
+    coordinates: {x: 0, y: 0}
   - destinationName: Russel Square
-    longitude: -0.125982
-    latitude: 51.521652
+    coordinates: {x: 0, y: 0}
   - destinationName: Holborn Station
-    longitude: -0.119959
-    latitude: 51.51742
+    coordinates: {x: 0, y: 0}
   - destinationName: Regents University London
-    longitude: -0.15511
-    latitude: 51.525707
+    coordinates: {x: 0, y: 0}
   - destinationName: Manchester Square
-    longitude: -0.152704
-    latitude: 51.516747
+    coordinates: {x: 0, y: 0}
   - destinationName: Jewish Museum London
-    longitude: -0.144584
-    latitude: 51.537346
+    coordinates: {x: 0, y: 0}
   - destinationName: Shoreditch High Street
-    longitude: -0.075406
-    latitude: 51.523243
+    coordinates: {x: 0, y: 0}
   - destinationName: Canary Wharf Underground Station
-    longitude: -0.018392
-    latitude: 51.503475
+    coordinates: {x: 0, y: 0}
   contentPanel: {fileID: 1387290881}
   buttonObjectPool: {fileID: 1899740285}
   searchBar: {fileID: 1026514604}
@@ -1469,7 +1457,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1638152890}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99999994
+  m_Size: 0.99966955
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
