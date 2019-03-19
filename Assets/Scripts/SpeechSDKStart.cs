@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System;
 using TMPro;
 using VoiceSearchTermsNS;
+using UnityEngine.SceneManagement;
 #if PLATFORM_ANDROID
 using UnityEngine.Android;
 #endif
@@ -42,6 +43,7 @@ public class SpeechSDKStart : MonoBehaviour
 	public Button homeButton;
 
 	private string executableMessage = "";
+	public string sceneName;
 
 
 
@@ -104,6 +106,7 @@ public class SpeechSDKStart : MonoBehaviour
 
 	void Start()
 	{
+		sceneName = SceneManager.GetActiveScene().name;
 		searchTermManager = gameObject.GetComponent<VoiceSearchTerms>();
 		animator = speechPanel.GetComponent<Animator>();
 		recordEvent = new UnityEvent();
@@ -193,7 +196,7 @@ public class SpeechSDKStart : MonoBehaviour
 		}
 		if (executableMessage != "")
 		{
-			readMessageAction(executableMessage);
+			readMessageAction(executableMessage, sceneName);
 			executableMessage = "";
 		}
 
@@ -212,43 +215,59 @@ public class SpeechSDKStart : MonoBehaviour
 		}
 	}
 
-	public void readMessageAction(string newMessage) {
+	public void readMessageAction(string newMessage, string sceneName) {
 		Debug.Log("Reading Message: " + newMessage);
-		string[] words = newMessage.Split(' ');
-		int actionCode = -1;
-		Dictionary<string, int> lookupTable = searchTermManager.VoiceCommandLookupTable;
-		Debug.Log("Words: " + words);
-		foreach (string word in words) {
-			string lowerWord = word.ToLower();
-			if (lookupTable.ContainsKey(lowerWord))
+		if (sceneName == "Navigation Scene")
+		{
+			string[] words = newMessage.Split(' ');
+			int actionCode = -1;
+			Dictionary<string, int> lookupTable = searchTermManager.VoiceCommandLookupTable;
+			Debug.Log("Words: " + words);
+			foreach (string word in words)
 			{
-				actionCode = lookupTable[lowerWord];
-				break;
+				string lowerWord = word.ToLower();
+				if (lookupTable.ContainsKey(lowerWord))
+				{
+					actionCode = lookupTable[lowerWord];
+					break;
+				}
+			}
+			Debug.Log("Action Code: " + actionCode);
+			switch (actionCode)
+			{
+				case ((int)VoiceAction.AROUND):
+					aroundMeButton.onClick.Invoke();
+					aroundMeButton.onClick.Invoke();
+					Debug.Log("Called Around me");
+					break;
+				case ((int)VoiceAction.AHEAD):
+					aheadOfMeButton.onClick.Invoke();
+					aheadOfMeButton.onClick.Invoke();
+					break;
+				case ((int)VoiceAction.MYLOCATION):
+					myLocationbutton.onClick.Invoke();
+					myLocationbutton.onClick.Invoke();
+					break;
+				case ((int)VoiceAction.OPTIONS):
+					optionsButton.onClick.Invoke();
+					optionsButton.onClick.Invoke();
+					break;
+				case ((int)VoiceAction.HOME):
+					homeButton.onClick.Invoke();
+					homeButton.onClick.Invoke();
+					break;
+				default:
+					message = "No Valid Command Found, Try Again";
+					Debug.Log(message);
+					break;
+
 			}
 		}
-		Debug.Log("Action Code: " + actionCode);
-		switch (actionCode) {
-			case ((int)VoiceAction.AROUND):
-				aroundMeButton.onClick.Invoke();
-				
-				Debug.Log("Called Around me");
-				break;
-			case ((int)VoiceAction.AHEAD):
-				aheadOfMeButton.onClick.Invoke();
-				break;
-			case ((int)VoiceAction.MYLOCATION):
-				myLocationbutton.onClick.Invoke();
-				break;
-			case ((int)VoiceAction.OPTIONS):
-				optionsButton.onClick.Invoke();
-				break;
-			case ((int)VoiceAction.HOME):
-				homeButton.onClick.Invoke();
-				break;
-			default:
-				message = "No Valid Command Found, Try Again";
-				Debug.Log(message);
-				break;
+		else if (sceneName == "Destination Select")
+		{
+			InputField searchBarField = GameObject.Find("Search Bar").GetComponent<InputField>();
+			Debug.Log("Destination Select Voice Activated");
+			searchBarField.text = newMessage;
 
 		}
 	}

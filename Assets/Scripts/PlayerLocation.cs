@@ -17,13 +17,13 @@ using System.Text.RegularExpressions;
 
 public class PlayerLocation : MonoBehaviour {
 
-	enum DirFilter 
+	enum DirFilter
 	{
 		AROUND,
 		AHEAD
 	};
-		
-	private AbstractMap abstractMap; 
+
+	private AbstractMap abstractMap;
 	private Vector2d mapCenter;
 	public TextMeshProUGUI infoHeaderTextMesh;
 	private List<BingMapsClasses.Result> resultsList;
@@ -60,7 +60,7 @@ public class PlayerLocation : MonoBehaviour {
 		}
 
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		//Debug.Log("CurrentPosition is: " + getLongLat().ToString());
@@ -76,6 +76,7 @@ public class PlayerLocation : MonoBehaviour {
 		newLatLong = locationProvider.CurrentLocation.LatitudeLongitude;
 		return newLatLong;
 		//return new Vector2d (newX, newY);
+
 	}
 
     public Vector3 getUnityPos(double lat, double lon) {
@@ -121,7 +122,7 @@ public class PlayerLocation : MonoBehaviour {
 
 			//Construct Strings after validation
 
-			//To be displayed on info panel 
+			//To be displayed on info panel
 			infoPanelString = (x + ". " + "<color=yellow>"+displayName+"</color>" + "\n" + result.AddressLine + "\n" + BingMapsEntityId.getEntityNameFromId (result.EntityTypeID));
 			infoPanelString = string.Format("<link=\"{0}\">{1}</link>", rawUrl, infoPanelString);
 			//To be read by TTS Handler
