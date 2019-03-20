@@ -268,6 +268,7 @@ public class SpeechSDKStart : MonoBehaviour
 			InputField searchBarField = GameObject.Find("Search Bar").GetComponent<InputField>();
 			Debug.Log("Destination Select Voice Activated");
 			searchBarField.text = newMessage;
+			searchBarField.onEndEdit.Invoke(newMessage);
 
 		}
 	}

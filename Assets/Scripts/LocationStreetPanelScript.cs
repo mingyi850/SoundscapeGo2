@@ -6,24 +6,27 @@ using Mapbox.Unity.Map;
 using Mapbox.Unity.Location;
 using UnityEngine.UI;
 using Mapbox.Utils;
-using Scripts.BingMapClassesLocator;
+using Scripts.Locator;
 
 
 public class LocationStreetPanelScript : MonoBehaviour
 {
     private TextMeshProUGUI locationTextMeshAddress;
-    private GameObject address1;
+    private GameObject player;
     private AbstractMap map;
-    private BingMapsClassesLocator BingMapsClassesLocatorScript;
-
+    private Locator BingMapsClassesLocatorScript;
+	private bool playerMoved = false;
+	private Vector3 lastPosition;
 
     // Start is called before the first frame update
     void Start()
     {
+		
         locationTextMeshAddress = gameObject.GetComponent<TextMeshProUGUI>();
-        address1 = GameObject.Find("Player");
-        map = GameObject.Find("Map").GetComponent<AbstractMap>();
-        BingMapsClassesLocatorScript = address1.GetComponent<BingMapsClassesLocator>();
+        player = GameObject.Find("Player");
+		lastPosition = player.transform.position;
+		map = GameObject.Find("Map").GetComponent<AbstractMap>();
+        BingMapsClassesLocatorScript = player.GetComponent<Locator>();
         StartCoroutine(CoroutineAddress());
     }
 
@@ -33,28 +36,13 @@ public class LocationStreetPanelScript : MonoBehaviour
         yield return new WaitUntil(() => map.isReady == true);
         while (true)
         {
-            yield return new WaitForSeconds(5f);
-            locationTextMeshAddress.text = BingMapsClassesLocatorScript.getAddress();
-            Debug.Log("CoroutineAddress: " + Time.time);
+			yield return new WaitForSeconds(5f);
+			if (player.transform.position != lastPosition)
+			{
+				Debug.Log("Player moved");
+				locationTextMeshAddress.text = BingMapsClassesLocatorScript.getAddress();
+				Debug.Log("CoroutineAddress: " + Time.time);
+			}
         }
     }
 }
-
-//string address = LocatorScript.getAddress();
-//Debug.Log(address);
-//locationTextMeshAddress.text = LocatorScript.getAddress();
-
-
-//public IEnumerator CoroutineAddress()
-//{
-//    while (true)
-//    {
-//        locationTextMesh.text = playerLocationScript.getLongLat().ToString();
-//        Debug.Log("CoroutineAddress: " + Time.time);
-//        locationTextMeshAddress.text = LocatorScript.getAddress();
-//        Debug.Log(locationTextMeshAddress);
-//        string address = LocatorScript.getAddress();
-//        Debug.Log(address);
-//        yield return new WaitForSeconds(5f);
-//    }
-//}
