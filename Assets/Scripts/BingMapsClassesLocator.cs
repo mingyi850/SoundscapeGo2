@@ -75,7 +75,7 @@ namespace Scripts.BingMapClassesLocator
             {
                 if (Time.time - startTimeB > 10)
                 {
-                    Debug.Log("API TIMEOUT");
+                    //Debug.Log("API TIMEOUT");
                     break;
                 }
             }
@@ -83,12 +83,12 @@ namespace Scripts.BingMapClassesLocator
             if (requestAddress.isDone)
             {
                 string jsonAddress = System.Text.Encoding.UTF8.GetString(requestAddress.bytes, 0, requestAddress.bytes.Length);
-                Debug.Log(jsonAddress);
+                //Debug.Log(jsonAddress);
                 RootObjectAddress rootObjectAddress = getRootObjectAddress(jsonAddress);
                 obtainedAddress = rootObjectAddress.resourceSets[0].resources[0].address.addressLine;
-                Debug.Log(obtainedAddress);
+                //Debug.Log(obtainedAddress);
                 this.addressStreet = obtainedAddress;
-                Debug.Log(obtainedAddress);
+                //Debug.Log(obtainedAddress);
                 return obtainedAddress;
             }
             return obtainedAddress;
@@ -104,7 +104,7 @@ namespace Scripts.BingMapClassesLocator
         {
             string staticAddresspoint = "http://dev.virtualearth.net/REST/v1/Locations";
             string queryAddressURL = (string.Format("{0}/{1}?includeEntityTypes=Address&o=json&key={2}", staticAddresspoint, latLong, apiKey));
-            Debug.Log(queryAddressURL);
+            //Debug.Log(queryAddressURL);
             return queryAddressURL;
         }
 
@@ -124,9 +124,9 @@ namespace Scripts.BingMapClassesLocator
             double Long = currentLocationVector.y;
             currentLocationVector.x = Long;
             currentLocationVector.y = Lat;
-            Debug.Log(currentLocationVector.ToString());
+            //Debug.Log(currentLocationVector.ToString());
             string currentLocation = currentLocationVector.ToString();
-            Debug.Log(currentLocation);
+            //Debug.Log(currentLocation);
             BingMapsClassesLocator bmcl = new BingMapsClassesLocator();
             string currentAddress = bmcl.requestAddressFromBingMaps(currentLocation);
             return currentAddress;

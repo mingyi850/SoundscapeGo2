@@ -2,14 +2,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mapbox.Utils;
 
 public class MarkersManager : MonoBehaviour
 {
     private static int playerPrefsCurrentArraySize = 0;
     public static int playerPrefsMaxArraySize = 100;
-    public Dictionary<string, Vector2> savedMarkers = new Dictionary<string, Vector2>();
+    public Dictionary<string, Vector2d> savedMarkers = new Dictionary<string, Vector2d>();
     string [] nameList = new string[playerPrefsMaxArraySize];
-    Vector2 [] coordinateList = new Vector2[playerPrefsMaxArraySize];
+    //Vector2d [] coordinateList = new Vector2d[playerPrefsMaxArraySize];
+    string [] XList = new string[playerPrefsMaxArraySize];
+    string [] YList = new string[playerPrefsMaxArraySize];
 
     // Start is called before the first frame update
     void Start()
@@ -28,7 +31,9 @@ public class MarkersManager : MonoBehaviour
     {
 
         nameList = PlayerPrefsX.GetStringArray("nameList", "null", playerPrefsMaxArraySize);
-        coordinateList = PlayerPrefsX.GetVector2Array("coordinateList", Vector2.zero, playerPrefsMaxArraySize);
+        //coordinateList = PlayerPrefsX.GetVector2Array("coordinateList", Vector2d.zero, playerPrefsMaxArraySize);
+        XList = PlayerPrefsX.GetStringArray("XList", "null", playerPrefsMaxArraySize);
+        YList = PlayerPrefsX.GetStringArray("YList", "null", playerPrefsMaxArraySize);
 
         int j = 0;
 
@@ -41,8 +46,15 @@ public class MarkersManager : MonoBehaviour
 
         for (int i = 0; i < playerPrefsCurrentArraySize; i++)
         {
-            savedMarkers.Add(nameList[i], coordinateList[i]);
+            savedMarkers.Add(nameList[i], ParseStringIntoVector(XList[i], YList[i]));
         }      
+    }
+
+    private Vector2d ParseStringIntoVector(string xs, string ys)
+    {
+        double x = double.Parse(xs, System.Globalization.CultureInfo.InvariantCulture);
+        double y = double.Parse(ys, System.Globalization.CultureInfo.InvariantCulture);
+        return new Vector2d(x, y);
     }
 
     private void SavePlayerPrefsData()
@@ -50,31 +62,37 @@ public class MarkersManager : MonoBehaviour
         for (int i = 0; i < playerPrefsMaxArraySize; i++)
         {
             nameList[i] = "null";
-            coordinateList[i] = Vector2.zero;
+            //coordinateList[i] = Vector2d.zero;
+            XList[i] = "null";
+            YList[i] = "null";
         }
         int j = 0;
-        foreach(KeyValuePair<string, Vector2> entry in savedMarkers)
+        foreach(KeyValuePair<string, Vector2d> entry in savedMarkers)
         {
             // do something with entry.Value or entry.Key
             nameList[j] = entry.Key;
-            coordinateList[j] = entry.Value;
+            //coordinateList[j] = entry.Value;
+            XList[j] = entry.Value.x.ToString();
+            YList[j] = entry.Value.y.ToString();
             j++;
         }
         PlayerPrefsX.SetStringArray("nameList", nameList);
-        PlayerPrefsX.SetVector2Array("coordinateList", coordinateList);
+        //PlayerPrefsX.SetVector2Array("coordinateList", coordinateList);
+        PlayerPrefsX.SetStringArray("XList", XList);
+        PlayerPrefsX.SetStringArray("YList", YList);
         PlayerPrefs.SetInt("listLength", playerPrefsCurrentArraySize);
     } 
 
     private void DisplayMarkersDictionary()
     {
-        foreach(KeyValuePair<string, Vector2> entry in savedMarkers)
+        foreach(KeyValuePair<string, Vector2d> entry in savedMarkers)
         {
             // do something with entry.Value or entry.Key
             Debug.Log(entry.Key + ": " + entry.Value);
         }
     }
 
-    public void SaveMarker(string name, Vector2 coordinates)
+    public void SaveMarker(string name, Vector2d coordinates)
     {
         savedMarkers.Add(name, coordinates);
         playerPrefsCurrentArraySize++;

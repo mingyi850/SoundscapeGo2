@@ -14,7 +14,7 @@ public class LocationStreetPanelScript : MonoBehaviour
     private TextMeshProUGUI locationTextMeshAddress;
     private GameObject address1;
     private AbstractMap map;
-    public BingMapsClassesLocator BingMapsClassesLocatorScript;
+    private BingMapsClassesLocator BingMapsClassesLocatorScript;
 
 
     // Start is called before the first frame update

@@ -29,7 +29,7 @@ public class SampleDestinationButton : MonoBehaviour
         nameLabel.text = destination.destinationName;
         destination.coordinates.x = currentDestination.coordinates.x;
         destination.coordinates.y = currentDestination.coordinates.y;
-        var distance = DistanceCalculator.getDistanceBetweenPlaces(destination.coordinates.y, destination.coordinates.x, deviceLocation.y, deviceLocation.x);
+        var distance = DistanceCalculator.getDistanceBetweenPlaces((float)destination.coordinates.y, (float)destination.coordinates.x, deviceLocation.y, deviceLocation.x);
         if (distance < 1.0)
         {
             distance = RoundMeters(distance * 100);
@@ -42,8 +42,8 @@ public class SampleDestinationButton : MonoBehaviour
 
     public void passCoordinatesToNextScene()
     {
-        PlayerPrefs.SetFloat("longitude", this.destination.coordinates.y);
-        PlayerPrefs.SetFloat("latitude", this.destination.coordinates.x);
+        PlayerPrefs.SetFloat("longitude", (float)this.destination.coordinates.y);
+        PlayerPrefs.SetFloat("latitude", (float)this.destination.coordinates.x);
     }
 
     public void LoadNextScene()

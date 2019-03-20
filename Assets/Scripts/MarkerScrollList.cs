@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Mapbox.Utils;
+
 
 [System.Serializable]
 
@@ -24,9 +26,9 @@ public class MarkerScrollList : MonoBehaviour
     private void UpdateMarkersList()
     {
         markerLists.Clear();
-        foreach(KeyValuePair<string, Vector2> entry in markersManager.savedMarkers)
+        foreach(KeyValuePair<string, Vector2d> entry in markersManager.savedMarkers)
         {
-            Destination destination = new Destination(entry.Key, entry.Value.x, entry.Value.y);
+            Destination destination = new Destination(entry.Key, entry.Value.x, entry.Value.y); //HERE too
             markerLists.Add(destination);
         }
     }

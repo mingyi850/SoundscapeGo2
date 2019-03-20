@@ -3,17 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Mapbox.Utils;
+
 
 [System.Serializable]
 public class Destination
 {
     public string destinationName;
-    public Vector2 coordinates;
+    public Vector2d coordinates;
 
-    public Destination(string nameLabel, float lat, float longit)
+    public Destination(string nameLabel, double lat, double longit)
     {
         destinationName = nameLabel;
-        coordinates = new Vector2(lat, longit);
+        coordinates = new Vector2d(lat, longit);
     }
 }
 
