@@ -15,12 +15,6 @@ public class SampleDestinationButton : MonoBehaviour
     private Destination destination;
     private ScrollList scrollList;
 
-    double RoundMeters(double num)
-    {
-        double intPart = Math.Truncate(num);
-        double rem = intPart % 25;
-        return rem >= 5 ? (intPart - rem + 10) : (intPart - rem);
-    }   
 
     public void Setup(Destination currentDestination, ScrollList currentScrollList)
     {
@@ -31,15 +25,17 @@ public class SampleDestinationButton : MonoBehaviour
         scrollList = currentScrollList;
     }
 
-    public void passCoordinatesToNextScene()
-    {
-        PlayerPrefs.SetFloat("longitude", (float)this.destination.coordinates.y);
-        PlayerPrefs.SetFloat("latitude", (float)this.destination.coordinates.x);
-    }
+	private void passCoordinateToPlayerPrefs(Vector2d coordinates)
+	{
+		float xCoordinate = (float)coordinates.x;
+		float yCoordinate = (float)coordinates.y;
+		PlayerPrefs.SetFloat("currentX", xCoordinate);
+		PlayerPrefs.SetFloat("currentY", yCoordinate);
+	}
 
     public void LoadNextScene()
     {
-        passCoordinatesToNextScene();
+        passCoordinateToPlayerPrefs(destination.coordinates);
         SceneManager.LoadScene("Navigation Scene");
     }
 }
