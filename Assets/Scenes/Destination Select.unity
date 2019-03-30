@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
+  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.3587269, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -143,12 +143,12 @@ RectTransform:
   m_Children:
   - {fileID: 503416790}
   m_Father: {fileID: 388885968}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.05, y: 0.025}
-  m_AnchorMax: {x: 0.95, y: 0.85}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.94259256, y: 0.75500005}
+  m_AnchoredPosition: {x: 4, y: 2.8251953}
+  m_SizeDelta: {x: 8, y: 5.6494}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &59146942
 MonoBehaviour:
@@ -435,6 +435,7 @@ RectTransform:
   - {fileID: 2115124804}
   - {fileID: 238261966}
   - {fileID: 1026514603}
+  - {fileID: 872613093}
   - {fileID: 59146941}
   - {fileID: 1711221730}
   m_Father: {fileID: 0}
@@ -645,6 +646,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: STT Panel
       objectReference: {fileID: 0}
+    - target: {fileID: 1785214665885834313, guid: 946161f34d9d43341a6b0df7f5c5b3ba,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1785214665885834314, guid: 946161f34d9d43341a6b0df7f5c5b3ba,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -683,7 +689,7 @@ PrefabInstance:
     - target: {fileID: 1785214665885834314, guid: 946161f34d9d43341a6b0df7f5c5b3ba,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1785214665885834314, guid: 946161f34d9d43341a6b0df7f5c5b3ba,
         type: 3}
@@ -752,6 +758,85 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 946161f34d9d43341a6b0df7f5c5b3ba, type: 3}
+--- !u!1 &872613092
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 872613093}
+  - component: {fileID: 872613095}
+  - component: {fileID: 872613094}
+  m_Layer: 5
+  m_Name: Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &872613093
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 872613092}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 388885968}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 570.6}
+  m_SizeDelta: {x: 972, y: 150.7}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &872613094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 872613092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 45
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 45
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 'Or explore famous landmarks around the world and their surroundings:'
+--- !u!222 &872613095
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 872613092}
+  m_CullTransparentMesh: 0
 --- !u!1 &897591033
 GameObject:
   m_ObjectHideFlags: 0
@@ -870,7 +955,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 4.8, y: 748.7}
+  m_AnchoredPosition: {x: 0.000012398, y: 736}
   m_SizeDelta: {x: 1033.5, y: 67.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1026514604
@@ -1292,7 +1377,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000007896794, y: 0.00082933216}
+  m_AnchoredPosition: {x: 0.0000015004327, y: 0.000040238654}
   m_SizeDelta: {x: 0, y: 1567}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1387290882
@@ -1331,30 +1416,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destinationList:
-  - destinationName: St Pancras Station
-    coordinates: {x: 0, y: 0}
-  - destinationName: UCL
-    coordinates: {x: 0, y: 0}
-  - destinationName: Royal National Hotel
-    coordinates: {x: 0, y: 0}
-  - destinationName: Bedford Square
-    coordinates: {x: 0, y: 0}
-  - destinationName: Bedford Square
-    coordinates: {x: 0, y: 0}
-  - destinationName: Russel Square
-    coordinates: {x: 0, y: 0}
-  - destinationName: Holborn Station
-    coordinates: {x: 0, y: 0}
-  - destinationName: Regents University London
-    coordinates: {x: 0, y: 0}
-  - destinationName: Manchester Square
-    coordinates: {x: 0, y: 0}
-  - destinationName: Jewish Museum London
-    coordinates: {x: 0, y: 0}
-  - destinationName: Shoreditch High Street
-    coordinates: {x: 0, y: 0}
-  - destinationName: Canary Wharf Underground Station
-    coordinates: {x: 0, y: 0}
+  - destinationName: Eiffel Tower, Paris, France
+    coordinates:
+      x: 48.857712
+      y: 2.29536
+  - destinationName: Arc De Triophe, Paris, France
+    coordinates:
+      x: 48.873474
+      y: 2.296727
+  - destinationName: Bradenburg Gate, Berlin, Germany
+    coordinates:
+      x: 52.516372
+      y: 13.378871
+  - destinationName: House Of Parliament, London, UK
+    coordinates:
+      x: 51.500346
+      y: -0.126149
+  - destinationName: Trevi Fountain, Rome, Italy
+    coordinates:
+      x: 41.900816
+      y: 12.483382
   contentPanel: {fileID: 1387290881}
   buttonObjectPool: {fileID: 1899740285}
   searchBar: {fileID: 1026514604}
@@ -1582,8 +1663,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1638152891}
   m_HandleRect: {fileID: 1638152890}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0.99999535
+  m_Value: 1
+  m_Size: 0.8980533
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

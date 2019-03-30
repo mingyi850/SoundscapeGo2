@@ -10,7 +10,6 @@ public class SampleDestinationButton : MonoBehaviour
     public Button button;
     public Text nameLabel;
     public Text distanceLabel;
-    public Vector2d deviceLocation = new Vector2d( 51.523180F, -0.132522F);  
 
 
     private Destination destination;
@@ -29,14 +28,6 @@ public class SampleDestinationButton : MonoBehaviour
         nameLabel.text = destination.destinationName;
         destination.coordinates.x = currentDestination.coordinates.x;
         destination.coordinates.y = currentDestination.coordinates.y;
-        var distance = DistanceCalculator.getDistanceBetweenPlaces((float)destination.coordinates.y, (float)destination.coordinates.x, deviceLocation.y, deviceLocation.x);
-        if (distance < 1.0)
-        {
-            distance = RoundMeters(distance * 100);
-            distanceLabel.text = distance.ToString() + "m";
-        } else {
-            distanceLabel.text = distance.ToString("0.00") + "km";
-        }
         scrollList = currentScrollList;
     }
 
