@@ -19,7 +19,8 @@ public class poiPanel : MonoBehaviour
 	public AudioBeacon beacon;
   public MarkersManager markersManager;
   public TextMeshProUGUI textField;
-  public Vector2 coordinates;
+  public double coordinateX;
+  public double coordinateY;
 
   // Start is called before the first frame update
   void Start()
@@ -48,7 +49,7 @@ public class poiPanel : MonoBehaviour
 	private void SaveMarker()
   {
       Debug.Log("Marker saved");
-      markersManager.SaveMarker(textField.text, new Vector2(coordinates.x, coordinates.y));
+      markersManager.SaveMarker(textField.text, new Vector2d(coordinateX, coordinateY));
   }
 
 	private void DeleteMarker()

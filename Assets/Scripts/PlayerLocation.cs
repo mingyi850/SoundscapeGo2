@@ -134,8 +134,8 @@ public class PlayerLocation : MonoBehaviour {
 
 			poiPanel gotoButton = relavantPoiPanel.GetComponent<poiPanel>();
 			gotoButton.setSendLocation(unityPos);
-			gotoButton.coordinates.x = (float)currentLocation.x;
-			gotoButton.coordinates.y = (float)currentLocation.y;
+			gotoButton.coordinateX = resultLat;
+			gotoButton.coordinateY = resultLong;
 
 
 			StartCoroutine (ttsHandler.GetTextToSpeech (singleReadableString, featureCount, unityPos, true));

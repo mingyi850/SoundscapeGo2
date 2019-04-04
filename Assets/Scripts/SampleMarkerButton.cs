@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using TMPro;
+using Mapbox.Utils;
 
 
 public class SampleMarkerButton : MonoBehaviour {
@@ -12,7 +13,7 @@ public class SampleMarkerButton : MonoBehaviour {
     public MarkersManager markersManager;
     
 
-    private Vector2 coordinates;
+    private Vector2d coordinates;
     private MarkerScrollList scrollList;
     private GameObject UIManagerObject;
     private int markerState = 1;
@@ -20,7 +21,7 @@ public class SampleMarkerButton : MonoBehaviour {
     
     public void Setup(Destination currentDestination, MarkerScrollList currentScrollList, GameObject UIManager, MarkersManager currentMarkersManager) 
     {
-        coordinates = currentDestination.coordinates;
+        coordinates = currentDestination.coordinates; //HERE
         nameLabel.text = currentDestination.destinationName;
         scrollList = currentScrollList;
         UIManagerObject = UIManager;
