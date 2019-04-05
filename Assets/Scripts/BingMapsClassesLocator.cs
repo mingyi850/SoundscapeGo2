@@ -127,8 +127,8 @@ namespace Scripts.BingMapClassesLocator
             //Debug.Log(currentLocationVector.ToString());
             string currentLocation = currentLocationVector.ToString();
             //Debug.Log(currentLocation);
-            BingMapsClassesLocator bmcl = new BingMapsClassesLocator();
-            string currentAddress = bmcl.requestAddressFromBingMaps(currentLocation);
+            
+            string currentAddress = requestAddressFromBingMaps(currentLocation);
             return currentAddress;
         }
 

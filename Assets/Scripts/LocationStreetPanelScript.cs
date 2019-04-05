@@ -6,7 +6,7 @@ using Mapbox.Unity.Map;
 using Mapbox.Unity.Location;
 using UnityEngine.UI;
 using Mapbox.Utils;
-using Scripts.Locator;
+using Scripts.BingMapClassesLocator;
 
 
 public class LocationStreetPanelScript : MonoBehaviour
@@ -14,7 +14,7 @@ public class LocationStreetPanelScript : MonoBehaviour
     private TextMeshProUGUI locationTextMeshAddress;
     private GameObject player;
     private AbstractMap map;
-    private Locator BingMapsClassesLocatorScript;
+    private BingMapsClassesLocator BingMapsClassesLocatorScript;
 	private bool playerMoved = false;
 	private Vector3 lastPosition;
 
@@ -26,7 +26,7 @@ public class LocationStreetPanelScript : MonoBehaviour
         player = GameObject.Find("Player");
 		lastPosition = player.transform.position;
 		map = GameObject.Find("Map").GetComponent<AbstractMap>();
-        BingMapsClassesLocatorScript = player.GetComponent<Locator>();
+        BingMapsClassesLocatorScript = player.GetComponent<BingMapsClassesLocator>();
         StartCoroutine(CoroutineAddress());
     }
 
@@ -41,6 +41,7 @@ public class LocationStreetPanelScript : MonoBehaviour
 			{
 				Debug.Log("Player moved");
 				locationTextMeshAddress.text = BingMapsClassesLocatorScript.getAddress();
+				yield return null;
 				Debug.Log("CoroutineAddress: " + Time.time);
 			}
         }

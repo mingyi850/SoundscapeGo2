@@ -10,7 +10,7 @@ namespace BingMapsEntities
 		public static Dictionary<string, string> map;
 		public static Dictionary<string, string> reverseMap;
 
-		int[] codes = {2084, 3578, 4013, 4100, 4170, 4444, 4482, 4493, 4580, 4581, 5000, 5400, 5511, 5512, 5540, 5571, 5800, 5813, 5999, 6000, 6512,
+		public int[] codes = {2084, 3578, 4013, 4100, 4170, 4444, 4482, 4493, 4580, 4581, 5000, 5400, 5511, 5512, 5540, 5571, 5800, 5813, 5999, 6000, 6512,
 			7011,
 			7012,
 			7013,
@@ -78,7 +78,7 @@ namespace BingMapsEntities
 			9999,
 		};
 
-		string[] entities = {"Winery",
+		public string[] entities = {"Winery",
 			"ATM",
 			"Train Station",
 			"Commuter Rail Station",

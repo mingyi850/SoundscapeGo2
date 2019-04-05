@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEditor;
 using TTS;
 using ButtonSelect;
-using Scripts.Locator;
+using Scripts.BingMapClassesLocator;
 using BingSearch;
 
 public class LayeredButton : MonoBehaviour
@@ -14,7 +14,7 @@ public class LayeredButton : MonoBehaviour
 	private ButtonSelector buttonSelector;
 	private PlayerLocation playerlocation;
 	private TextToSpeechHandler ttsHandler;
-	private Locator locator;
+	private BingMapsClassesLocator locator;
 	private UIManager uiManager;
 	private string buttonText;
 	private BingSearchHandler bingSearchHandler;
@@ -29,7 +29,7 @@ public class LayeredButton : MonoBehaviour
 		playerlocation = GameObject.Find("Player").GetComponent<PlayerLocation>();
 		ttsHandler = GameObject.Find("TextToSpeechHandler").GetComponent<TextToSpeechHandler>();
 		uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
-		locator = GameObject.Find("Player").GetComponent<Locator>();
+		locator = GameObject.Find("Player").GetComponent<BingMapsClassesLocator>();
 		bingSearchHandler = GameObject.Find("BingSearchHandler").GetComponent<BingSearchHandler>();
 	}
 

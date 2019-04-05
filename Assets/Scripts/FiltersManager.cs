@@ -32,6 +32,7 @@ public class FiltersManager : MonoBehaviour
         }
         int[] settingsArray = settingsList.ToArray();
         PlayerPrefsX.SetIntArray("EntitiesCodes", settingsArray);
+		Debug.Log(settingsArray.Length);
 		
     }
 }

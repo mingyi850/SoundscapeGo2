@@ -15,6 +15,7 @@ using TTS;
 using System.Text.RegularExpressions;
 
 
+
 public class PlayerLocation : MonoBehaviour {
 
 	enum DirFilter
@@ -30,6 +31,7 @@ public class PlayerLocation : MonoBehaviour {
 	private TextToSpeechHandler ttsHandler;
 	private BingSearchHandler bsHandler;
 	public GameObject infoPanel;
+	public FiltersManager filtersManager;
 	Dictionary<int, Transform> infoPanelMap;
 	private Regex poiRegex;
 	private ILocationProvider locationProvider;

@@ -4,22 +4,28 @@ using UnityEngine;
 
 
 
-namespace Scripts.BingMapClasses {
-	
-	[System.Serializable]
-	public class BingMapsClasses : MonoBehaviour {
 
-		public static T[] getJsonArray<T>(string JSONString) {
+
+namespace Scripts.BingMapClasses {
+
+	[System.Serializable]
+	public class BingMapsClasses : MonoBehaviour
+	{
+
+		public static T[] getJsonArray<T>(string JSONString)
+		{
 			string newJsonString = "{\"array\": " + JSONString + "}";
-			Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>> (newJsonString);
+			Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>(newJsonString);
 			return wrapper.array;
 		}
 
-		public static RootObject getRootObject(string JSONString) {
-			return JsonUtility.FromJson<RootObject> (JSONString);
+		public static RootObject getRootObject(string JSONString)
+		{
+			return JsonUtility.FromJson<RootObject>(JSONString);
 		}
 
-		private class Wrapper<T> {
+		private class Wrapper<T>
+		{
 			public T[] array;
 		}
 
@@ -55,7 +61,8 @@ namespace Scripts.BingMapClasses {
 			public D d;
 		}
 
-		public static List<Result> requestPoiFromBingMaps(double latitude, double longitude, double distance, int poiCount) {
+		public static List<Result> requestPoiFromBingMaps(double latitude, double longitude, double distance, int poiCount)
+		{
 			string bingMapsApiKey = "Aul2Lj8luxSAtsuBPTb0qlqhXc6kwdTZvQGvGkOc_h_Jg3HI_2F-V6BeeHwHZZ4E";
 			string dataAccessId = "c2ae584bbccc4916a0acf75d1e6947b4";
 			string dataSourceName = "NavteqEU";
@@ -65,42 +72,75 @@ namespace Scripts.BingMapClasses {
 
 
 			string queryURL = generateQueryUrlNearby(dataAccessId, dataSourceName, entityTypeName, latitude, longitude, distance, returnParams, poiCount, dataFormat, bingMapsApiKey);
-			WWW request = new WWW (queryURL);
+			WWW request = new WWW(queryURL);
 			float startTime = Time.time;
-			while (request.isDone == false) {
-				if (Time.time - startTime > 10) {
-					Debug.Log ("API TIMEOUT");
+			while (request.isDone == false)
+			{
+				if (Time.time - startTime > 10)
+				{
+					Debug.Log("API TIMEOUT");
 					break;
 				}
 
 			}
-			if (request.isDone) {
-				string jsonData = System.Text.Encoding.UTF8.GetString (request.bytes, 0, request.bytes.Length);
+			if (request.isDone)
+			{
+				string jsonData = System.Text.Encoding.UTF8.GetString(request.bytes, 0, request.bytes.Length);
 
-				BingMapsClasses.RootObject rootObject = BingMapsClasses.getRootObject (jsonData);
+				BingMapsClasses.RootObject rootObject = BingMapsClasses.getRootObject(jsonData);
 
 				return rootObject.d.results;
 
-			} else 
-               {
-				return new List<Result> ();
+			}
+			else
+			{
+				return new List<Result>();
 			}
 
 		}
 
-		private static string generateQueryUrlNearby(string dataAccessId, string dataSourceName, string entityTypeName, double latitude, double longitude, double distance, string[] returnParams, int poiCount, string format, string apiKey) {
+		private static string generateQueryUrlNearby(string dataAccessId, string dataSourceName, string entityTypeName, double latitude, double longitude, double distance, string[] returnParams, int poiCount, string format, string apiKey)
+		{
 			string staticEndpoint = "http://spatial.virtualearth.net/REST/v1/data";
 			string returnParamsString = "";
-			foreach (string param in returnParams) {
+			foreach (string param in returnParams)
+			{
 				returnParamsString = returnParamsString + param + ",";
 			}
-			Debug.Log (returnParamsString);
+			Debug.Log(returnParamsString);
 			returnParamsString = returnParamsString.Remove(returnParamsString.Length - 1);
-			Debug.Log (returnParamsString);
-			string queryURL = (string.Format("{0}/{1}/{2}/{3}?spatialFilter=nearby({4},{5},{6})&$select={7}&$top={8}&$format={9}&key={10}",staticEndpoint, dataAccessId, dataSourceName, entityTypeName, latitude, longitude, distance, returnParamsString, poiCount, format, apiKey));
-			Debug.Log (queryURL);
+			Debug.Log(returnParamsString);
+			string entityFiltersString = getEntityFiltersString();
+			string queryURL = (string.Format("{0}/{1}/{2}/{3}?spatialFilter=nearby({4},{5},{6})&$filter=EntityTypeID in {10}&$select={7}&$top={8}&$format={9}&key={11}", staticEndpoint, dataAccessId, dataSourceName, entityTypeName, latitude, longitude, distance, returnParamsString, poiCount, format, entityFiltersString, apiKey));
+			Debug.Log(queryURL);
 			return queryURL;
 		}
 
+		private static string getEntityFiltersString()
+		{
+			int[] entityFilters = PlayerPrefsX.GetIntArray("EntitiesCodes");
+			string filteredFiltersString = "(";
+			int totalFilters = entityFilters.Length;
+			if (totalFilters > 50)
+			{
+				totalFilters = 50; // maxiumum number for Query API
+			}
+			for (int x = 0; x < totalFilters; x++)
+			{
+				filteredFiltersString += "'" + entityFilters[x].ToString() + "'";
+				if (x < (totalFilters - 1))
+				{
+					filteredFiltersString += ", ";
+				}
+				else
+				{
+					filteredFiltersString += ")";
+				}
+			}
+
+			Debug.Log(filteredFiltersString);
+			return filteredFiltersString;
+
+		}
 	}
 }
