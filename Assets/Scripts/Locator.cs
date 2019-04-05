@@ -112,10 +112,9 @@ namespace Scripts.Locator
         {
             abstractMap = GameObject.Find("Map").GetComponent<AbstractMap>();
             playerLocation = FindObjectOfType<PlayerLocation>();
-            playerLocation.getLongLat();
             yield return new WaitUntil(() => abstractMap.isReady == true);
             mapCenter = abstractMap.getCenterLongLat();
-        }
+		}
 
         public string getAddress()
         {

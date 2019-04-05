@@ -47,7 +47,14 @@ public class SaveLocation : MonoBehaviour
 	{
 		StartCoroutine(passSearchResultToPlayerPrefs());
 		yield return new WaitUntil(() => newSearchResultPassed);
-		SceneManager.LoadScene("Navigation Scene");
+		if (((int)PlayerPrefs.GetFloat("currentX") != 0) && ((int)PlayerPrefs.GetFloat("currentY") != 0.000f))
+		{
+			SceneManager.LoadScene("Navigation Scene");
+		}
+		else
+		{
+			Debug.Log("Invalid Coordinatnes");
+		}
 	}
 
 	public void LoadNextPageFunction()

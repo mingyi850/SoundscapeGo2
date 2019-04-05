@@ -75,6 +75,12 @@ public class LayeredButton : MonoBehaviour
 		{
 			string addressString = locator.getAddress();
 			string bingMapsQuery = string.Format("https://bing.com/maps/default.aspx?where1={0}", addressString);
+
+			#if UNITY_ANDROID
+			Debug.Log("Android branch mylocastion");
+			bingMapsQuery = string.Format("http://maps.google.com/?q={0}", addressString);
+			#endif
+
 			Application.OpenURL(bingMapsQuery);
 			buttonSelector.setLastClickedId("");
 		}

@@ -28,21 +28,23 @@ public class PlayerLocation : MonoBehaviour {
 	public TextMeshProUGUI infoHeaderTextMesh;
 	private List<BingMapsClasses.Result> resultsList;
 	private TextToSpeechHandler ttsHandler;
-	private ILocationProvider locationProvider;
 	private BingSearchHandler bsHandler;
 	public GameObject infoPanel;
 	Dictionary<int, Transform> infoPanelMap;
 	private Regex poiRegex;
+	private ILocationProvider locationProvider;
 	// Use this for initialization
+
 	IEnumerator Start () {
-		locationProvider = GameObject.Find ("LocationProviderFactoryObject").GetComponent<LocationProviderFactory> ().TransformLocationProvider;
+
+		locationProvider = GameObject.Find("LocationProviderFactoryObject").GetComponent<LocationProviderFactory>().TransformLocationProvider;
 		abstractMap = GameObject.Find("Map").GetComponent<AbstractMap>();
 		ttsHandler = GameObject.Find ("TextToSpeechHandler").GetComponent<TextToSpeechHandler> ();
 		bsHandler = GameObject.Find ("BingSearchHandler").GetComponent<BingSearchHandler> ();
+		poiRegex = new Regex(@"POI Panel");
 		yield return new WaitUntil(() => abstractMap.isReady == true);
 
 		mapCenter = abstractMap.getCenterLongLat ();
-		poiRegex = new Regex ("POI Panel [1-3]");
 		//initialise infopanel dictionary
 		infoPanelMap = new Dictionary<int, Transform>();
 		for (int x = 0; x < infoPanel.transform.childCount; x++) {
@@ -73,6 +75,7 @@ public class PlayerLocation : MonoBehaviour {
 		Debug.Log(mapCenter.ToString() + " from getLongLat");
 		newX = mapCenter.x + longLatChange.x;
 		newY = mapCenter.y + longLatChange.y;*/
+		Debug.Log(locationProvider);
 		newLatLong = locationProvider.CurrentLocation.LatitudeLongitude;
 		return newLatLong;
 		//return new Vector2d (newX, newY);
