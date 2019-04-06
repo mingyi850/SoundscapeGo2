@@ -47,7 +47,7 @@ public class SaveLocation : MonoBehaviour
 	{
 		StartCoroutine(passSearchResultToPlayerPrefs());
 		yield return new WaitUntil(() => newSearchResultPassed);
-		if (((int)PlayerPrefs.GetFloat("currentX") != 0.000f) && ((int)PlayerPrefs.GetFloat("currentY") != 0.000f))
+		if ((PlayerPrefs.GetFloat("currentX") != 0.000f) && (PlayerPrefs.GetFloat("currentY") != 0.000f))
 		{
 			SceneManager.LoadScene("Navigation Scene");
 		}
