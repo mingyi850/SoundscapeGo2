@@ -6,12 +6,15 @@ using BingMapsEntities;
 
 public class FiltersManager : MonoBehaviour
 {
+    public Dropdown dropdown;
+
     private List<int> settingsList = new List<int>();
+    private int searchRadius = 200;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        dropdown.value = ConvertRadiusToIndex(PlayerPrefs.GetInt("SearchRadius", 200));
     }
 
     // Update is called once per frame
@@ -34,5 +37,35 @@ public class FiltersManager : MonoBehaviour
         PlayerPrefsX.SetIntArray("EntitiesCodes", settingsArray);
 		Debug.Log(settingsArray.Length);
 		
+    }
+
+    public void ModifySearchRadius()
+    {
+        int index = dropdown.value;
+        if (index == 0)
+            searchRadius = 50;
+        if (index == 1)
+            searchRadius = 200;
+        if (index == 2)
+            searchRadius = 500;
+        if (index == 3)
+            searchRadius = 1000;
+        if (index == 4)
+            searchRadius = 2000;
+        Debug.Log(searchRadius);
+        PlayerPrefs.SetInt("SearchRadius", searchRadius);
+    }
+
+    private int ConvertRadiusToIndex(int radius)
+    {
+        if (radius == 200)
+            return 1;
+        if (radius == 500)
+            return 2;
+        if (radius == 1000)
+            return 3;
+        if (radius == 2000)
+            return 4;
+        else return 0;
     }
 }
