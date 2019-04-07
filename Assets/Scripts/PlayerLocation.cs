@@ -127,10 +127,10 @@ public class PlayerLocation : MonoBehaviour {
 			//Construct Strings after validation
 
 			//To be displayed on info panel
-			infoPanelString = (x + ". " + "<color=yellow>"+displayName+"</color>" + "\n" + result.AddressLine + "\n" + BingMapsEntityId.getEntityNameFromId (result.EntityTypeID));
+			infoPanelString = ("<color=yellow>"+displayName+"</color>" + "\n" + result.AddressLine + "\n" + BingMapsEntityId.getEntityNameFromId (result.EntityTypeID));
 			infoPanelString = string.Format("<link=\"{0}\">{1}</link>", rawUrl, infoPanelString);
 			//To be read by TTS Handler
-			singleReadableString = x + ". " + displayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId (result.EntityTypeID) + " , " + relativeDirectionString;
+			singleReadableString = displayName + " , " + result.AddressLine + " , " + BingMapsEntityId.getEntityNameFromId (result.EntityTypeID) + " , " + relativeDirectionString;
 			//Get Relevant panel and text box:
 			Transform relavantPoiPanel = infoPanelMap [x];
 			TextMeshProUGUI relavantTextMesh = relavantPoiPanel.Find ("POI Info").GetComponent<TextMeshProUGUI> ();
