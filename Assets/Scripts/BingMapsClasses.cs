@@ -83,7 +83,11 @@ namespace Scripts.BingMapClasses {
 				}
 
 			}
-			if (request.isDone)
+			if (request.error != null) {
+				Debug.Log(request.error);
+				return new List<Result>();
+			}
+			else if (request.isDone)
 			{
 				string jsonData = System.Text.Encoding.UTF8.GetString(request.bytes, 0, request.bytes.Length);
 

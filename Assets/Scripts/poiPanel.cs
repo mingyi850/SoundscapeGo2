@@ -17,16 +17,16 @@ public class poiPanel : MonoBehaviour
 {
 	private Vector3 sendLocation;
 	public AudioBeacon beacon;
-  public MarkersManager markersManager;
-  public TextMeshProUGUI textField;
-  public double coordinateX;
-  public double coordinateY;
+	public MarkersManager markersManager;
+	public TextMeshProUGUI textField;
+	public double coordinateX;
+	public double coordinateY;
 
   // Start is called before the first frame update
   void Start()
-  {
+	{
   	sendLocation = Vector3.zero;
-  }
+	}
 
 	public void sendBeacon()
 	{
@@ -39,25 +39,33 @@ public class poiPanel : MonoBehaviour
 	}
 
 	public void SaveButtonClicked() 
-  {
+	{
         if (markersManager.isASavedMarker(textField.text) == 0)
             SaveMarker();
         else if (markersManager.isASavedMarker(textField.text) == 1)
             DeleteMarker();
-  }
+	}
 
 	private void SaveMarker()
-  {
+	 {
       Debug.Log("Marker saved");
       markersManager.SaveMarker(textField.text, new Vector2d(coordinateX, coordinateY));
-  }
+	 }
 
 	private void DeleteMarker()
-  {
+	{
       markersManager.DeleteMarker(textField.text);    
       Debug.Log("Marker deleted");
         
 	}
+
+	public void DeleteAllContent()
+	{
+		textField.text = "";
+		coordinateX = 0.0;
+		coordinateY = 0.0;
+	}
+
 	
     
 

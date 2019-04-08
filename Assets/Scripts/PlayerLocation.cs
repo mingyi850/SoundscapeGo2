@@ -101,7 +101,8 @@ public class PlayerLocation : MonoBehaviour {
 		int totalFeatureCount = 3;
 		int featureCount = 0;
 		string headerText = "";
-		List<BingMapsClasses.Result> newResultsList = BingMapsClasses.requestPoiFromBingMaps (latitude, longitude, 5.0, 10); //limitation due to Bing Search API : Allows only 3 calls per second
+		double searchRadius = ((double)PlayerPrefs.GetInt("SearchRadius", 5000)) / 1000;
+		List<BingMapsClasses.Result> newResultsList = BingMapsClasses.requestPoiFromBingMaps (latitude, longitude, searchRadius, 10); //limitation due to Bing Search API : Allows only 3 calls per second
 		foreach (BingMapsClasses.Result result in newResultsList) {
 			//Gather Data about point
 			// 1. Gather positional data
