@@ -21,11 +21,14 @@ public class poiPanel : MonoBehaviour
 	public TextMeshProUGUI textField;
 	public double coordinateX;
 	public double coordinateY;
+	private Image saveButtonImage;
+
 
   // Start is called before the first frame update
   void Start()
 	{
-  	sendLocation = Vector3.zero;
+  		sendLocation = Vector3.zero;
+		saveButtonImage = transform.Find("Save Button").GetComponent<Image>();
 	}
 
 	public void sendBeacon()
@@ -66,7 +69,20 @@ public class poiPanel : MonoBehaviour
 		coordinateY = 0.0;
 	}
 
-	
-    
+	void Update()
+	{
+		if (markersManager.isASavedMarker(textField.text) == 1)
+		{
+			saveButtonImage.color = Color.red;
+		}
+		else
+		{
+			saveButtonImage.color = Color.white;
+		}
+
+	}
+
+
+
 
 }

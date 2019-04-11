@@ -993,9 +993,7 @@ namespace Mapbox.Unity.Map
 			return _centerLatitudeLongitude;
 		}
 
-		public bool getIsReady() {
-			return this.getIsReady();
-		}
+		
 	}
 
 

@@ -83,7 +83,7 @@ public class MarkersManager : MonoBehaviour
         PlayerPrefs.SetInt("listLength", playerPrefsCurrentArraySize);
     } 
 
-    private void DisplayMarkersDictionary()
+    public void DisplayMarkersDictionary()
     {
         foreach(KeyValuePair<string, Vector2d> entry in savedMarkers)
         {

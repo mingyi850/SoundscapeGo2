@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641234, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -316,9 +316,8 @@ RectTransform:
   - {fileID: 798889043}
   - {fileID: 329762537}
   - {fileID: 1799573182}
-  - {fileID: 1563910392}
   m_Father: {fileID: 1874502047}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1281,7 +1280,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.13725491, g: 0.20000002, b: 0.31764707, a: 1}
+    m_NormalColor: {r: 0.12156863, g: 0.2627451, b: 0.3882353, a: 1}
     m_HighlightedColor: {r: 0.14509805, g: 0.2392157, b: 0.3882353, a: 1}
     m_PressedColor: {r: 0.16862746, g: 0.22352941, b: 0.46666667, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -1327,7 +1326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.14509805, g: 0.23921569, b: 0.3882353, a: 1}
+  m_Color: {r: 0.12156863, g: 0.2627451, b: 0.3882353, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -2119,7 +2118,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 50 m
+  m_Text: 200 m
 --- !u!222 &284802485
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2674,6 +2673,7 @@ GameObject:
   - component: {fileID: 360607309}
   - component: {fileID: 360607308}
   - component: {fileID: 360607311}
+  - component: {fileID: 360607312}
   m_Layer: 5
   m_Name: InfoPanel
   m_TagString: Untagged
@@ -2765,6 +2765,18 @@ SortingGroup:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
+--- !u!114 &360607312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 360607306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db13a7de9d9903d458c484fd709e0d5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &370485398
 GameObject:
   m_ObjectHideFlags: 0
@@ -4490,7 +4502,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Menu
+  m_Text: Settings Menu
 --- !u!222 &695733083
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4919,7 +4931,7 @@ MonoBehaviour:
     lineCount: 0
     pageCount: 0
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -6177,7 +6189,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   infoHeaderTextMesh: {fileID: 220030158}
   infoPanel: {fileID: 360607306}
-  filtersManager: {fileID: 0}
 --- !u!114 &1068245700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6913,7 +6924,7 @@ MonoBehaviour:
     lineCount: 0
     pageCount: 0
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -9237,12 +9248,12 @@ RectTransform:
   m_Children:
   - {fileID: 1525010740}
   - {fileID: 1575631450}
-  m_Father: {fileID: 37084982}
-  m_RootOrder: 6
+  m_Father: {fileID: 1874502047}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.2049708, y: 318.00012}
+  m_AnchoredPosition: {x: 0.0049743652, y: -141.69992}
   m_SizeDelta: {x: 800.01, y: 192.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1575631449
@@ -9331,8 +9342,6 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: 50 m
-      m_Image: {fileID: 0}
     - m_Text: 200 m
       m_Image: {fileID: 0}
     - m_Text: 500 m
@@ -9340,6 +9349,8 @@ MonoBehaviour:
     - m_Text: 1 km
       m_Image: {fileID: 0}
     - m_Text: 2 km
+      m_Image: {fileID: 0}
+    - m_Text: 5 km
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -10851,7 +10862,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000056773897, y: 0}
+  m_AnchoredPosition: {x: 0.00015134952, y: -0.000034009197}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1642132340
@@ -11997,7 +12008,7 @@ GameObject:
   - component: {fileID: 1762995754}
   - component: {fileID: 1762995753}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Close Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12065,6 +12076,17 @@ MonoBehaviour:
       - m_Target: {fileID: 360607306}
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 360607312}
+        m_MethodName: deleteAllPoiText
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -13053,6 +13075,7 @@ RectTransform:
   - {fileID: 1546114805}
   - {fileID: 370485399}
   - {fileID: 521996062}
+  - {fileID: 1563910392}
   - {fileID: 37084982}
   m_Father: {fileID: 1608309116}
   m_RootOrder: 8

@@ -83,12 +83,11 @@ namespace Scripts.Locator
             if (requestAddress.isDone)
             {
                 string jsonAddress = System.Text.Encoding.UTF8.GetString(requestAddress.bytes, 0, requestAddress.bytes.Length);
-                Debug.Log(jsonAddress);
                 RootObjectAddress rootObjectAddress = getRootObjectAddress(jsonAddress);
                 obtainedAddress = rootObjectAddress.resourceSets[0].resources[0].address.addressLine;
-                Debug.Log(obtainedAddress);
+                //Debug.Log(obtainedAddress);
                 this.addressStreet = obtainedAddress;
-                Debug.Log(obtainedAddress);
+               // Debug.Log(obtainedAddress);
                 return obtainedAddress;
             }
             return obtainedAddress;
