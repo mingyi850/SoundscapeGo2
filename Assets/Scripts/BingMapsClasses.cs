@@ -115,7 +115,15 @@ namespace Scripts.BingMapClasses {
 			returnParamsString = returnParamsString.Remove(returnParamsString.Length - 1);
 			Debug.Log(returnParamsString);
 			string entityFiltersString = getEntityFiltersString();
-			string queryURL = (string.Format("{0}/{1}/{2}/{3}?spatialFilter=nearby({4},{5},{6})&$filter=EntityTypeID in {10}&$select={7}&$top={8}&$format={9}&key={11}", staticEndpoint, dataAccessId, dataSourceName, entityTypeName, latitude, longitude, distance, returnParamsString, poiCount, format, entityFiltersString, apiKey));
+			string queryURL;
+			if (entityFiltersString != "")
+			{
+				queryURL = (string.Format("{0}/{1}/{2}/{3}?spatialFilter=nearby({4},{5},{6})&$filter=EntityTypeID in {10}&$select={7}&$top={8}&$format={9}&key={11}", staticEndpoint, dataAccessId, dataSourceName, entityTypeName, latitude, longitude, distance, returnParamsString, poiCount, format, entityFiltersString, apiKey));
+			}
+			else
+			{
+				queryURL = (string.Format("{0}/{1}/{2}/{3}?spatialFilter=nearby({4},{5},{6})&$select={7}&$top={8}&$format={9}&key={10}", staticEndpoint, dataAccessId, dataSourceName, entityTypeName, latitude, longitude, distance, returnParamsString, poiCount, format, apiKey));
+			}
 			Debug.Log(queryURL);
 			return queryURL;
 		}
@@ -125,6 +133,11 @@ namespace Scripts.BingMapClasses {
 			int[] entityFilters = PlayerPrefsX.GetIntArray("EntitiesCodes");
 			string filteredFiltersString = "(";
 			int totalFilters = entityFilters.Length;
+			if (totalFilters == 0)
+			{
+				return "";
+			}
+
 			if (totalFilters > 50)
 			{
 				totalFilters = 50; // maxiumum number for Query API

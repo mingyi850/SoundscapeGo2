@@ -17,6 +17,7 @@ public class FiltersManager : MonoBehaviour
 		dropdown.value = ConvertRadiusToIndex(PlayerPrefs.GetInt("SearchRadius", 200));
 		loadFilterToggleSettings();
 		initialised = true;
+		
 	}
 
 	// Update is called once per frame
@@ -89,7 +90,7 @@ public class FiltersManager : MonoBehaviour
 		}
 	}
 
-	private void loadFilterToggleSettings()
+	public void loadFilterToggleSettings()
 	{
 		foreach (Transform child in transform)
 		{
