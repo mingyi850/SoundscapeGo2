@@ -1,4 +1,4 @@
-﻿#if !UNITY_EDITOR_OSX
+﻿#if !UNITY_IOS
 
 using UnityEngine;
 using UnityEngine.UI;
