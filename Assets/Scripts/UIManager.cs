@@ -31,7 +31,7 @@ public class UIManager : MonoBehaviour
 		infoPanel.SetActive(false);
 		sideMenu.DOAnchorPos(new Vector2(0, 0), 0.25f);
 		markersPanel.DOAnchorPos(new Vector2(-800, 0), 0.25f);
-		sideMenuButton.DOAnchorPos(new Vector2(0, 725), 0.25f);
+		sideMenuButton.DOAnchorPos(new Vector2(0, 585), 0.25f);
 		menuButtonObject.transform.SetParent(sidePanel);
 		homeButton.gameObject.SetActive(false);
 	}
@@ -39,7 +39,7 @@ public class UIManager : MonoBehaviour
 	public void MarkersPanelSlideOut() {
 		menuState = 2;
 		markersPanel.DOAnchorPos(Vector2.zero, 0.25f);
-		sideMenuButton.DOAnchorPos(new Vector2(0, 725), 0.25f);
+		sideMenuButton.DOAnchorPos(new Vector2(0, 585), 0.25f);
 		menuButtonObject.transform.SetParent(markersPanelTransform);
 	}
 
