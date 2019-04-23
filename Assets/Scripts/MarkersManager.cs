@@ -97,6 +97,7 @@ public class MarkersManager : MonoBehaviour
         savedMarkers.Add(name, coordinates);
         playerPrefsCurrentArraySize++;
         DisplayMarkersDictionary();     // Debug 
+		SavePlayerPrefsData();
     }
 
     public void DeleteMarker(string name)
